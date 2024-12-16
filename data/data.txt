@@ -184,3 +184,4 @@ Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
 2024-12-16T19:50:00.233632: Duplikat ID wykryty: 0987654321 w wierszu 7
 2024-12-16T19:50:00.234015: Duplikat ID wykryty: 0987654321 w wierszu 7
 2024-12-16T19:52:26.389038: Testowy log - czy działa poprawnie?
+2024-12-16T19:55:06.550804: Testowy log - czy działa poprawnie?
