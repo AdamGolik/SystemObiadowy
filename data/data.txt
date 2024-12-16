@@ -1,0 +1,186 @@
+Próba ponownego dodania ucznia z ID Karty: 1234567890
+Dodano ucznia: Adam Golik, klasa 2, nr w dzienniku 82
+Dodano ucznia z ID Karty: 1122334455
+Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
+2024-12-16T19:38:49.816488: Dodano ucznia: Klasa = 6C, Numer = 11
+2024-12-16T19:38:51.057571: Dodano dzieci: Liczba = 2
+2024-12-16T19:38:53.023781: Dodano nauczycieli: Liczba = 2
+2024-12-16T19:39:04.080817: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:04.081329: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:04.081619: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:04.081880: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:04.082130: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:04.084134: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:04.084511: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:04.084810: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:04.085068: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:04.085315: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:07.013744: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:07.014378: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:07.014900: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:07.015305: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:07.015684: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:07.021268: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:07.021979: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:07.022427: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:07.022763: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:07.023138: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:09.120761: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:09.121553: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:09.121923: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:09.122225: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:09.122550: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:09.124440: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:09.124736: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:09.125061: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:09.125369: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:09.125702: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:11.069017: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:11.069617: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:11.070186: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:11.070759: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:11.071262: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:11.073683: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:11.074140: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:11.074583: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:11.075018: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:11.075369: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:12.611261: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:12.611864: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:12.612324: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:12.612607: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:12.612844: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:12.614640: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:12.615029: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:12.615476: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:12.615824: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:12.616132: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:14.492709: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:14.493096: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:14.493404: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:14.493625: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:14.493898: Duplikat ID wykryty: 1234567890 w wierszu 0
+2024-12-16T19:39:14.495090: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:14.495323: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:14.495538: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:14.495749: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:39:14.495965: Duplikat ID wykryty: 1234567890 w wierszu 5
+2024-12-16T19:41:41.626932: Testowy log - czy działa poprawnie?
+2024-12-16T19:41:49.653126: Nieprawidłowe dane wejściowe: 6C11
+2024-12-16T19:41:56.219277: Nieprawidłowe dane wejściowe: 5C5
+2024-12-16T19:42:06.602536: Nieprawidłowe dane wejściowe: 6C11
+2024-12-16T19:42:19.933754: Testowy log - czy działa poprawnie?
+2024-12-16T19:42:24.502060: Nieprawidłowe dane wejściowe: 6C11
+2024-12-16T19:43:18.077806: Testowy log - czy działa poprawnie?
+2024-12-16T19:43:25.783989: Nieprawidłowe dane wejściowe: 6C11
+2024-12-16T19:43:28.482165: Nieprawidłowe dane wejściowe: 2
+2024-12-16T19:44:02.362375: Testowy log - czy działa poprawnie?
+2024-12-16T19:44:13.147605: Nieprawidłowe dane wejściowe: 5A5
+2024-12-16T19:45:45.835238: Testowy log - czy działa poprawnie?
+2024-12-16T19:45:49.478410: Nieprawidłowe dane wejściowe: 6C11
+2024-12-16T19:45:55.811306: Nieprawidłowe dane wejściowe: 5a5
+2024-12-16T19:46:11.043551: Testowy log - czy działa poprawnie?
+2024-12-16T19:46:16.278020: Nieprawidłowe dane wejściowe: 5A5
+2024-12-16T19:49:25.978012: Testowy log - czy działa poprawnie?
+2024-12-16T19:49:31.120606: Testowy log - czy działa poprawnie?
+2024-12-16T19:49:50.093931: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:50.094511: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:50.094834: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:50.095091: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:50.095434: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:50.095796: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:50.096058: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:50.096311: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:50.096560: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:50.096812: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.574490: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:53.574860: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:53.575295: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:53.575657: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:53.575994: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:53.576274: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.576584: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.576890: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.577156: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.577407: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:53.577649: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:53.577984: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:53.578232: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:53.578555: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:53.578801: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:53.579042: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:53.579285: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:53.579533: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:53.579778: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:53.580002: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.591985: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:49:55.592464: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:49:55.592883: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:49:55.593242: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:49:55.593590: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:49:55.594069: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:55.594459: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:55.594769: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:55.595157: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:55.595507: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:49:55.595788: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:55.596077: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:55.596329: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:55.596578: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:55.597209: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:49:55.597561: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:55.597855: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:55.598125: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:55.598430: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:55.598698: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:49:55.598985: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.599249: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.599537: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.599802: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.600140: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:49:55.600420: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:49:55.600733: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:49:55.601017: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:49:55.601366: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:49:55.601727: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.223014: Duplikat ID wykryty: 0987654321 w wierszu 0
+2024-12-16T19:50:00.223460: Duplikat ID wykryty: 0987654321 w wierszu 0
+2024-12-16T19:50:00.223806: Duplikat ID wykryty: 0987654321 w wierszu 0
+2024-12-16T19:50:00.224100: Duplikat ID wykryty: 0987654321 w wierszu 0
+2024-12-16T19:50:00.224360: Duplikat ID wykryty: 0987654321 w wierszu 0
+2024-12-16T19:50:00.224621: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:50:00.224891: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:50:00.225207: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:50:00.225599: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:50:00.225884: Duplikat ID wykryty: 1234567890 w wierszu 1
+2024-12-16T19:50:00.226171: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:50:00.226436: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:50:00.226692: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:50:00.226946: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:50:00.227215: Duplikat ID wykryty: brak w wierszu 2
+2024-12-16T19:50:00.227462: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:50:00.227701: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:50:00.227962: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:50:00.228189: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:50:00.228493: Duplikat ID wykryty: brak w wierszu 3
+2024-12-16T19:50:00.228804: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:50:00.229113: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:50:00.229354: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:50:00.229584: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:50:00.229809: Duplikat ID wykryty: Brak w wierszu 4
+2024-12-16T19:50:00.230052: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:50:00.230291: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:50:00.230572: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:50:00.230841: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:50:00.231094: Duplikat ID wykryty: Brak w wierszu 5
+2024-12-16T19:50:00.231360: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.231583: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.231824: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.232088: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.232416: Duplikat ID wykryty: 1234567890 w wierszu 6
+2024-12-16T19:50:00.232701: Duplikat ID wykryty: 0987654321 w wierszu 7
+2024-12-16T19:50:00.233031: Duplikat ID wykryty: 0987654321 w wierszu 7
+2024-12-16T19:50:00.233315: Duplikat ID wykryty: 0987654321 w wierszu 7
+2024-12-16T19:50:00.233632: Duplikat ID wykryty: 0987654321 w wierszu 7
+2024-12-16T19:50:00.234015: Duplikat ID wykryty: 0987654321 w wierszu 7
+2024-12-16T19:52:26.389038: Testowy log - czy działa poprawnie?
