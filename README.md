@@ -36,8 +36,8 @@ Ten projekt demonstruje prostą logikę biznesową i architekturę, jaką można
 ## Instalacja
 1. **Pobierz projekt:** Sklonuj repozytorium i przejdź do katalogu projektu:
 ``` bash
-   git clone <url-repozytorium>
-   cd <katalog-repozytorium>
+   git clone <https://github.com/AdamGolik/SystemObiadowy>
+   cd <SystemObiadowy>
 ```
 1. **Upewnij się, że posiadasz wymagane narzędzia:**
     - Kompilator C++: `g++` (GCC) lub `MinGW` w systemie Windows.
