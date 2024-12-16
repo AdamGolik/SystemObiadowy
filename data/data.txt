@@ -193,3 +193,7 @@ Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
 2024-12-16T19:58:59.650557: Dodano ucznia na podstawie ID karty: 1234567890
 2024-12-16T19:59:03.472653: Dodano dzieci: liczba = 2
 2024-12-16T19:59:06.155241: Dodano nauczycieli: liczba = 2
+2024-12-16T20:07:36.945486: Testowy log - czy działa poprawnie?
+2024-12-16T20:07:40.746245: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Nowak, Klasa: 5A, Nr w dzienniku: 5, ID karty: 0987654321
+2024-12-16T20:07:40.746851: Dodano ucznia na podstawie klasy: 5A, numer: 5
+2024-12-16T20:07:40.747163: Przetworzono dane wejściowe dla klasy i numeru: 5A, Nr: 5
