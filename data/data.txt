@@ -185,3 +185,11 @@ Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
 2024-12-16T19:50:00.234015: Duplikat ID wykryty: 0987654321 w wierszu 7
 2024-12-16T19:52:26.389038: Testowy log - czy działa poprawnie?
 2024-12-16T19:55:06.550804: Testowy log - czy działa poprawnie?
+2024-12-16T19:58:41.170662: Testowy log - czy działa poprawnie?
+2024-12-16T19:58:46.177065: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Nowak, Klasa: 5A, Nr w dzienniku: 5, ID karty: 0987654321
+2024-12-16T19:58:46.177738: Dodano ucznia na podstawie klasy: 5A, numer: 5
+2024-12-16T19:58:46.178088: Przetworzono dane wejściowe dla klasy i numeru: 5A, Nr: 5
+2024-12-16T19:58:59.650104: Dodano studenta do tabeli: Imię: Jan, Nazwisko: Kowalski, Klasa: 6C, Nr w dzienniku: 11, ID karty: 1234567890
+2024-12-16T19:58:59.650557: Dodano ucznia na podstawie ID karty: 1234567890
+2024-12-16T19:59:03.472653: Dodano dzieci: liczba = 2
+2024-12-16T19:59:06.155241: Dodano nauczycieli: liczba = 2

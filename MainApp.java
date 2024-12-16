@@ -137,46 +137,58 @@ public class MainApp {
     private void processInput(String input) {
         if (input.matches("\\d{10}") || input.length() > 8 && input.matches("\\d+")) { // ID Karty
             addStudentById(input);
+            logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
         } else if (input.matches("\\d+[A-Z]\\d+")) { // Klasa i numer w dzienniku np. 5A5
             String classAndLetter = input.replaceFirst("\\d+$", ""); // Wyodrębnia "5A"
             String number = input.replaceAll("^\\d+[A-Z]", "");      // Wyodrębnia "5"
 
             addStudentByClassAndNumber(classAndLetter, number);
+            logToFile("Przetworzono dane wejściowe dla klasy i numeru: " +
+                    classAndLetter + ", Nr: " + number);
         } else if (input.matches("\\d+N")) { // Liczba nauczycieli
-            int count = Integer.parseInt(input.replaceAll("N", "")); // Wyodrębnianie liczby nauczycieli
-            addTeachers(count); // Dodawanie nauczycieli
+            int count = Integer.parseInt(input.replaceAll("N", ""));
+            addTeachers(count);
+            logToFile("Dodano nauczycieli: liczba = " + count);
         } else if (input.matches("\\d+")) { // Liczba dzieci
-            addChildren(Integer.parseInt(input));
+            int count = Integer.parseInt(input);
+            addChildren(count);
+            logToFile("Dodano dzieci: liczba = " + count);
         } else {
-            JOptionPane.showMessageDialog(null, "Nieodpowiedni format danych!");
+            String errorMessage = "Nieodpowiedni format danych! Dane: " + input;
+            JOptionPane.showMessageDialog(null, errorMessage);
+            logToFile("Błąd: " + errorMessage);
         }
     }
 
+private void addStudentById(String cardId) {
+    for (Student student : studentList) {
+        if (student.getCardId().equals(cardId)) {
+            addStudentToTable(student);
+            logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
+            return;
+        }
+    }
+    String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
+    JOptionPane.showMessageDialog(null, errorMessage);
+    logToFile("Błąd: " + errorMessage);
+}
     private void addStudentByClassAndNumber(String className, String classNumber) {
         for (Student student : studentList) {
             if (student.getClassName().equalsIgnoreCase(className) &&
                     student.getClassNumber().equals(classNumber)) {
                 addStudentToTable(student);
+                logToFile("Dodano ucznia na podstawie klasy: " + className + ", numer: " + classNumber);
                 return;
             }
         }
-        JOptionPane.showMessageDialog(null, "Nie znaleziono ucznia w klasie: " + className + ", nr: " + classNumber);
+        String errorMessage = "Nie znaleziono ucznia w klasie: " + className + ", nr: " + classNumber;
+        JOptionPane.showMessageDialog(null, errorMessage);
+        logToFile("Błąd: " + errorMessage);
     }
-
-
 
     /**
      * Dodaje ucznia do tabeli na podstawie ID karty.
      */
-    private void addStudentById(String cardId) {
-        for (Student student : studentList) {
-            if (student.getCardId().equals(cardId)) {
-                addStudentToTable(student);
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "Nie znaleziono ucznia z ID: " + cardId);
-    }
 
     /**
      * Dodaje ucznia do tabeli na podstawie klasy i numeru w dzienniku.
@@ -216,6 +228,10 @@ public class MainApp {
                 student.getClassNumber(),
                 student.getCardId()
         });
+        logToFile("Dodano studenta do tabeli: " +
+                "Imię: " + student.getFirstName() + ", Nazwisko: " + student.getLastName() +
+                ", Klasa: " + student.getClassName() + ", Nr w dzienniku: " + student.getClassNumber() +
+                ", ID karty: " + student.getCardId());
         configureRowColoring(); // Kolorowanie wierszy
     }
 
@@ -279,8 +295,8 @@ public class MainApp {
             String name = (String) dataTable.getValueAt(selectedRows[i], 0);
             String cardId = (String) dataTable.getValueAt(selectedRows[i], 4);
 
-            logToFile("Usunięto wiersz: Imię = " + name + ", ID = " + cardId);
-
+            // Dodaj logowanie informacji o usunięciu
+            logToFile("Usunięto wiersz: Imię = " + name + ", ID karty = " + cardId);
             tableModel.removeRow(selectedRows[i]);
         }
     }
@@ -296,8 +312,10 @@ public class MainApp {
                         tableModel.getValueAt(i, 4));
                 bw.newLine();
             }
+            logToFile("Zapisano dane do pliku CSV: " + CSV_FILE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Błąd podczas zapisywania pliku CSV: " + e.getMessage());
+            logToFile("Błąd: Podczas zapisywania pliku CSV: " + e.getMessage());
         }
     }
 
