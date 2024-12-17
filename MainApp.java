@@ -19,7 +19,15 @@ public class MainApp {
 
     private DefaultTableModel tableModel;
     private List<Student> studentList = new ArrayList<>();
+    //data
     private final String CSV_FILE = "data/students.csv";
+    private static final String REPORT_FILE_PATH = "data/raport.txt";
+    private static final String MEALS_FILE_PATH = "data/obiady.txt";
+    //obiady counting
+    private int totalMeals = 0; // Całkowita liczba obiadów
+    private int totalChildren = 0; // Liczba obiadów dla dzieci
+    private int totalTeachers = 0; // Liczba obiadów dla nauczycieli
+    private int mealsLogCount = 0; // Numeracja wpisów w pliku obiady.txt
     private Timer autoInputTimer; // Timer do obsługi opóźnionego dodawania danych
     public MainApp() {
         // Inicjalizacja GUI
@@ -56,6 +64,20 @@ public class MainApp {
                 JOptionPane.showMessageDialog(null, "Proszę wpisać dane!");
             }
         });
+        //zapisuje pliki
+        try (BufferedReader reader = new BufferedReader(new FileReader(MEALS_FILE_PATH))) {
+            String lastLine = null, line;
+            while ((line = reader.readLine()) != null) {
+                lastLine = line; // Pobierz ostatnią linię
+            }
+
+            if (lastLine != null && lastLine.matches("\\d+\\. .*")) {
+                String[] parts = lastLine.split("\\. ", 2);
+                mealsLogCount = Integer.parseInt(parts[0]); // Ustaw numer ostatniego wpisu
+            }
+        } catch (IOException | NumberFormatException e) {
+            mealsLogCount = 0; // Jeśli plik nie istnieje lub błąd odczytu, ustaw na 0
+        }
 
         setupAutoInput();
     }
@@ -242,6 +264,64 @@ public class MainApp {
             JOptionPane.showMessageDialog(null, errorMessage);
             logToFile("Błąd: " + errorMessage);
         }
+
+        if (input == null || input.isEmpty()) return;
+        boolean cardFound = false;
+        // Sprawdzenie wprowadzonego inputu
+
+        for (Student student : studentList) {
+            if (student.getCardId().equalsIgnoreCase(input)) {
+                addStudentToTable(student); // Dodanie studenta do tabeli
+                totalMeals++; // Dodajemy wydany obiad do licznika
+                cardFound = true;
+                break;
+            }
+        }
+
+        if (!cardFound) {
+            if (input.matches("\\d+")) { // Przetwarzanie wielu dzieci np. "20"
+                int count = Integer.parseInt(input); // Pobiera liczbę dzieci
+                totalChildren += count; // Zwiększ licznik dzieci
+                totalMeals += count; // Dodaj wydane obiady
+            } else if (input.matches("\\d+N")) { // Przetwarzanie wielu nauczycieli np. "20N"
+                int count = Integer.parseInt(input.substring(0, input.length() - 1)); // Pobiera liczbę nauczycieli
+                totalTeachers += count; // Zwiększ licznik nauczycieli
+                totalMeals += count; // Dodaj wydane obiady
+            } else {
+                logNoCardEntry(input); // Logujemy brak karty dla innych przypadków
+            }
+        }
+        updateMealsLog();
+    }
+    private void updateMealsLog() {
+        mealsLogCount++; // Inkrementacja numeru wpisu
+        String message = mealsLogCount + ". " + LocalDateTime.now() +
+                " - Liczba wydanych obiadów: " + totalMeals +
+                " (Dzieci: " + totalChildren + ", Nauczyciele: " + totalTeachers + ")";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(MEALS_FILE_PATH, true))) { // Dopisujemy do pliku
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void logNoCardEntry(String input) {
+        // Sprawdź, czy input dotyczy dzieci (cyfry) lub nauczycieli (cyfry z literą "N").
+        if (input.matches("\\d+") || input.matches("\\d+N")) {
+            System.out.println("Wyjątek: Nie trzeba logować uczniów i nauczycieli bez kart: " + input);
+            return; // Nie logujemy dzieci i nauczycieli bez karty
+        }
+
+        // Tworzymy wiadomość logującą brak karty
+        String message = LocalDateTime.now() + " - Brak karty dla klasy/nr dziennika: " + input;
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(REPORT_FILE_PATH, true))) {
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 private void addStudentById(String cardId) {
@@ -319,6 +399,8 @@ private void addStudentById(String cardId) {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        totalMeals++; // Zwiększ licznik obiadów za każdą dodaną osobę
+        updateMealsLog(); // Aktualizuj liczbę obiadów w obiady.txt
         configureRowColoring(); // Kolorowanie wierszy
     }
 
