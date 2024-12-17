@@ -78,7 +78,107 @@ Podczas uruchamiania program wykona następujące kroki:
 2. Wygeneruje plik `manifest.txt`, który wskaże klasę główną (`MainApp`).
 3. Skompiluje pliki `.java` w katalogu `src` do plików `.class` umieszczonych w katalogu `out`.
 4. Utworzy plik `system-obiadowy.jar` na podstawie przygotowanych plików.
+## **Instrukcja kompilacji i uruchamiania Javy na Windows**
+### Krok 1: Instalacja JDK
+1. Pobierz **Java Development Kit (JDK)** z [oficjalnej strony Oracle]() lub z [OpenJDK]().
+2. Zainstaluj JDK, upewniając się, że dodano narzędzia (`javac`, `java`, `jar`) do zmiennej środowiskowej **PATH**.
+3. Zweryfikuj instalację, otwierając wiersz polecenia (`cmd`) i wpisując następujące komendy:
+``` cmd
+   java -version
+   javac -version
+   jar --version
+```
+Jeżeli wersje są poprawnie wyświetlone, środowisko zostało poprawnie skonfigurowane.
+### Krok 2: Kompilacja programu Java
+1. Załóżmy, że Twoje pliki `.java` znajdują się w katalogu `src`. W naszym przypadku struktura projektu wygląda tak:
+``` 
+SystemObiadowy/
+├── src/
+│   ├── MainApp.java        (klasa główna)
+│   └── Student.java        (pomocnicza klasa obsługująca informacje o studentach)
+└── JavaToExeConverter.cpp  (program automatyzacji)
+```
+1. Otwórz **cmd** (wiersz polecenia), przejdź do folderu `SystemObiadowy`:
+``` cmd
+   cd C:\Users\<Twoja_Nazwa_Użytkownika>\Desktop\Projects\SystemObiadowy
+```
+1. Skorzystaj z następującego polecenia, aby skompilować wszystkie pliki `.java` znajdujące się w katalogu `src`:
+``` cmd
+   javac -d out -sourcepath src src\*.java
+```
+**Wyjaśnienie parametrów:**
+- `-d out`: Tworzy katalog `out` i umieszcza tam pliki `.class`.
+- `-sourcepath src`: Określa lokalizację plików `.java`.
+- `src\*.java`: Kompiluje wszystkie pliki `.java` w katalogu `src`.
 
+1. Po wykonaniu tego polecenia, w katalogu `SystemObiadowy` zostanie utworzony folder `out`, a w nim znajdą się skompilowane pliki `.class`.
+
+### Krok 3: Tworzenie pliku JAR
+Po skompilowaniu plików `.java` do `.class` utwórz plik `.jar` za pomocą narzędzia **jar**:
+1. Wygeneruj **plik manifestu** (jeśli chcesz stworzyć plik ręcznie, wykonaj poniższe kroki, jednak program C++ generuje go automatycznie):
+    - Utwórz plik tekstowy `manifest.txt` o następującej treści:
+``` 
+     Manifest-Version: 1.0
+     Main-Class: com.example.mealapp.MainApp
+     Class-Path: .
+```
+1. Użyj następującego polecenia, aby stworzyć plik `.jar`:
+``` cmd
+   jar cfm system-obiadowy.jar manifest.txt -C out .
+```
+**Wyjaśnienie parametrów:**
+- `c`: Tworzenie nowego pliku `.jar`.
+- `f`: Określenie nazwy wynikowego pliku JAR.
+- `m`: Dołączenie pliku manifestu.
+- `-C out .`: Dołączenie wszystkich plików `.class` z katalogu `out`.
+
+1. Po wykonaniu tego polecenia powstanie plik `system-obiadowy.jar`.
+
+### Krok 4: Uruchamianie programu `.jar`
+Aby uruchomić plik `.jar`, wykonaj następujące polecenie w wierszu polecenia:
+``` cmd
+java -jar system-obiadowy.jar
+```
+Program JAR uruchomi się w konsoli i pozwoli na interakcję z aplikacją.
+## Przykład z wiersza polecenia
+Zakładając, że Twoje pliki znajdują się w `C:\Projects\SystemObiadowy`:
+``` cmd
+C:\> cd C:\Projects\SystemObiadowy
+C:\Projects\SystemObiadowy> javac -d out -sourcepath src src\*.java
+C:\Projects\SystemObiadowy> jar cfm system-obiadowy.jar manifest.txt -C out .
+C:\Projects\SystemObiadowy> java -jar system-obiadowy.jar
+```
+Rezultatem powinna być działająca aplikacja konsolowa.
+### Tip: Tworzenie skryptu `.bat` do automatyzacji
+Aby ułatwić cały proces, możesz utworzyć plik `.bat`, który automatycznie przeprowadzi wszystko:
+1. Utwórz plik o nazwie `build_and_run.bat`:
+``` bat
+   @echo off
+   echo Kompilacja kodu Java...
+   javac -d out -sourcepath src src\*.java
+
+   echo Tworzenie pliku JAR...
+   jar cfm system-obiadowy.jar manifest.txt -C out .
+
+   echo Uruchamianie programu...
+   java -jar system-obiadowy.jar
+   pause
+```
+1. Kliknij dwukrotnie plik `build_and_run.bat`, aby zautomatyzować cały proces kompilacji, tworzenia JAR i uruchomienia aplikacji.
+
+## Rozwiązywanie problemów na Windows
+1. **Problem: `javac` lub `java` nie znaleziono.**
+    - Upewnij się, że ścieżka do JDK (np. `C:\Program Files\Java\jdk-XX\bin`) znajduje się w zmiennej środowiskowej **PATH**.
+
+2. **Problem: `Nieznany manifest: Main class not found` w momencie uruchamiania JAR.**
+    - Upewnij się, że plik `manifest.txt` zawiera poprawną nazwę klasy głównej (`Main-Class: com.example.mealapp.MainApp`).
+    - Sprawdź, czy classpath jest ustawiony na `.` w manifest.txt (`Class-Path: .`).
+
+3. **Problem: Brak narzędzia `jar`.**
+    - Upewnij się, że używasz pełnej wersji JDK (Java Development Kit), a nie tylko JRE (Java Runtime Environment).
+
+4. **Problem: Błędy kompilacji.**
+    - Upewnij się, że pliki .java są w poprawnym formacie, a katalog `src` istnieje.
 Po zakończeniu procesu plik JAR zostanie przygotowany w katalogu głównym.
 ## Konwersja JAR na EXE (opcjonalnie)
 Jeżeli chcesz skonwertować plik `.jar` do `.exe`, możesz użyć narzędzia **Launch4j**:
