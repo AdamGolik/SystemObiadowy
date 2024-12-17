@@ -211,3 +211,11 @@ Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
 2024-12-17T07:40:20.039472: Testowy log - czy działa poprawnie?
 2024-12-17T07:40:22.714238: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
 2024-12-17T07:40:22.714759: Dodano ucznia na podstawie ID karty: 1234567890
+2024-12-17T15:06:29.091905: Testowy log - czy działa poprawnie?
+Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-17T15:06:35.356713
+2024-12-17T15:06:35.357383: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-17T15:06:35.357783: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-17T15:06:51.572910
+2024-12-17T15:06:51.573434: Dodano ucznia na podstawie ID karty: 0987654321
+Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-17T15:07:01.896285
+2024-12-17T15:07:01.896663: Dodano ucznia na podstawie ID karty: 0987654321

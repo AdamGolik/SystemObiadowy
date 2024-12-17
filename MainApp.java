@@ -28,11 +28,11 @@ public class MainApp {
         dataTable = new JTable(tableModel);
 
         configureRowColoring();
-
         inputField = new JTextField(20);
         addButton = new JButton("Dodaj");
         deleteButton = new JButton("Usuń");
-        saveButton = new JButton("Zapisz");
+        saveButton = new JButton("Zapisz"); // Przyciski zainicjalizowane
+        saveButton.setText("Raport"); // Bezpieczne wywołanie metody po inicjalizacji
 
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Wpisz dane:"));
@@ -97,7 +97,56 @@ public class MainApp {
             autoInputTimer.start();
         }
     }
+    // Metoda generująca raport do pliku data.txt
+    private void generateReport() {
+        Set<String> noCardStudents = new HashSet<>(); // Set przechowa unikalne przypadki braku karty
+        int totalMealsServed = 0; // Licznik podanych obiadów
 
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
+            writer.write("=== RAPORT ===");
+            writer.newLine();
+
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String studentName = (String) tableModel.getValueAt(i, 0);
+                String cardId = (String) tableModel.getValueAt(i, 1);
+                String date = tableModel.getValueAt(i, 2).toString();
+
+                if (cardId == null || cardId.isEmpty()) {
+                    noCardStudents.add(studentName + " [" + date + "]");
+                }
+                totalMealsServed++;
+            }
+
+            // Zapis przypadków braku kart
+            writer.write("Liczba przypadków braku karty: " + noCardStudents.size());
+            writer.newLine();
+
+            for (String entry : noCardStudents) {
+                writer.write("- " + entry);
+                writer.newLine();
+            }
+
+            // Zapis danych podsumowujących obiady
+            writer.write("Liczba wydanych obiadów: " + totalMealsServed);
+            writer.newLine();
+            writer.write("=================");
+            writer.newLine();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // Metoda zapisująca liczbę wydanych obiadów do obiady.txt
+    private void saveMealsToFile() {
+        int totalMealsServed = tableModel.getRowCount(); // Liczba zjedzonych obiadów = liczba wierszy w tabeli
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/obiady.txt", true))) {
+            writer.write(LocalDateTime.now() + " - Liczba obiadów: " + totalMealsServed);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      *
      * @param message
@@ -130,7 +179,42 @@ public class MainApp {
             JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
         }
     }
-
+    private void saveDataToLogFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/data.txt", true))) {
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                StringBuilder row = new StringBuilder();
+                for (int j = 0; j < tableModel.getColumnCount(); j++) {
+                    row.append(tableModel.getValueAt(i, j)).append(";");
+                }
+                writer.write(row.toString());
+                writer.newLine();
+            }
+            writer.write("Data zapisu: " + LocalDateTime.now());
+            writer.newLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Błąd podczas zapisu danych do pliku", "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void generateNoCardReport() {
+        Set<String> reportLines = new HashSet<>();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            Object cardInfo = tableModel.getValueAt(i, 1); // Przykład: druga kolumna to informacja o karcie
+            Object date = tableModel.getValueAt(i, 2); // Przykład: trzecia kolumna to data
+            if (cardInfo != null && cardInfo.equals("Brak karty")) {
+                String dateInfo = date != null ? date.toString() : "Nieznana data";
+                reportLines.add("Data: " + dateInfo + ", brak karty!");
+            }
+        }
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/raport.txt"))) {
+            for (String line : reportLines) {
+                writer.write(line);
+                writer.newLine();
+            }
+            JOptionPane.showMessageDialog(mainPanel, "Raport został zapisany do data/raport.txt");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(mainPanel, "Błąd podczas zapisu raportu", "Błąd", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     /**
      * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
      */
@@ -228,10 +312,13 @@ private void addStudentById(String cardId) {
                 student.getClassNumber(),
                 student.getCardId()
         });
-        logToFile("Dodano studenta do tabeli: " +
-                "Imię: " + student.getFirstName() + ", Nazwisko: " + student.getLastName() +
-                ", Klasa: " + student.getClassName() + ", Nr w dzienniku: " + student.getClassNumber() +
-                ", ID karty: " + student.getCardId());
+        // Automatyczny zapis danych do pliku data.txt
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
+            writer.write("Dodano studenta: " + student.getFirstName() + ", ID karty: " + student.getCardId() + ", Data: " + LocalDateTime.now());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         configureRowColoring(); // Kolorowanie wierszy
     }
 
