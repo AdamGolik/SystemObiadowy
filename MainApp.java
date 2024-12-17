@@ -87,7 +87,7 @@ public class MainApp {
                 autoInputTimer.stop();
             }
 
-            autoInputTimer = new Timer(800, e -> {
+            autoInputTimer = new Timer(300, e -> {
                 if (input.equals(inputField.getText().trim())) {
                     addStudentById(input);
                     inputField.setText("");

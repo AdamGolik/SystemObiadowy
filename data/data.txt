@@ -197,3 +197,17 @@ Dodano ucznia: Anna Nowak, klasa: 6C, nr: 11
 2024-12-16T20:07:40.746245: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Nowak, Klasa: 5A, Nr w dzienniku: 5, ID karty: 0987654321
 2024-12-16T20:07:40.746851: Dodano ucznia na podstawie klasy: 5A, numer: 5
 2024-12-16T20:07:40.747163: Przetworzono dane wejściowe dla klasy i numeru: 5A, Nr: 5
+2024-12-16T20:18:02.829557: Testowy log - czy działa poprawnie?
+2024-12-16T20:18:58.344211: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-16T20:18:58.344962: Dodano ucznia na podstawie ID karty: 0987654321
+2024-12-16T20:19:12.338209: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
+2024-12-16T20:19:12.338717: Dodano ucznia na podstawie klasy: 8B, numer: 1
+2024-12-16T20:19:12.339077: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 1
+2024-12-16T20:19:23.369644: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
+2024-12-16T20:19:23.370008: Dodano ucznia na podstawie klasy: 8B, numer: 1
+2024-12-16T20:19:23.370261: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 1
+2024-12-16T20:19:39.453474: Dodano dzieci: liczba = 2
+2024-12-16T20:19:41.720215: Dodano nauczycieli: liczba = 2
+2024-12-17T07:40:20.039472: Testowy log - czy działa poprawnie?
+2024-12-17T07:40:22.714238: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
+2024-12-17T07:40:22.714759: Dodano ucznia na podstawie ID karty: 1234567890
