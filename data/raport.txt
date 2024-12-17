@@ -5,3 +5,5 @@
 2024-12-17T15:15:07.862866 - Brak karty dla klasy/nr dziennika: 8B2
 2024-12-17T15:18:19.471010 - Brak karty dla klasy/nr dziennika: 8B2
 2024-12-17T15:21:15.516966 - Brak karty dla klasy/nr dziennika: 8B2
+2024-12-17T17:41:38.998472 - Brak karty dla klasy/nr dziennika: 8B2
+2024-12-17T17:43:25.979844 - Brak karty dla klasy/nr dziennika: 8B2
