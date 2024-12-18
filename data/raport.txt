@@ -1,0 +1,9 @@
+===== dzień: 18 ==== miesiąc: 12 =====
+2024-12-18T15:35:22.741820 - Brak karty dla wprowadzonego identyfikatora: 8B2
+2024-12-18T15:38:10.623863 - Brak karty dla wprowadzonego identyfikatora: 8B2
+2024-12-18T15:53:46.955858 - Brak karty dla wprowadzonego identyfikatora: 8B2
+2024-12-18T16:23:59.282114 - Brak karty dla wprowadzonego identyfikatora: 8B2
+2024-12-18T16:30:29.445988 - Brak karty dla wprowadzonego identyfikatora: 8B2
+===== dzień: 19 ==== miesiąc: 12 =====
+2024-12-18T16:40:05.163922 - Brak karty dla wprowadzonego identyfikatora: 8B2
+2024-12-18T16:43:56.346672 - Brak karty dla wprowadzonego identyfikatora: 8B1
