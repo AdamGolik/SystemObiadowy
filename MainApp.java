@@ -23,6 +23,7 @@ public class MainApp {
     private final String CSV_FILE = "data/students.csv";
     private static final String REPORT_FILE_PATH = "data/raport.txt";
     private static final String MEALS_FILE_PATH = "data/obiady.txt";
+    private static final String REP_FILE_PATH = "data/raport.txt";
     //obiady counting
     private int totalMeals = 0; // Całkowita liczba obiadów
     private int totalChildren = 0; // Liczba obiadów dla dzieci
@@ -120,56 +121,6 @@ public class MainApp {
             autoInputTimer.start();
         }
     }
-    // Metoda generująca raport do pliku data.txt
-//    private void generateReport() {
-//        Set<String> noCardStudents = new HashSet<>(); // Set przechowa unikalne przypadki braku karty
-//        int totalMealsServed = 0; // Licznik podanych obiadów
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
-//            writer.write("=== RAPORT ===");
-//            writer.newLine();
-//
-//            for (int i = 0; i < tableModel.getRowCount(); i++) {
-//                String studentName = (String) tableModel.getValueAt(i, 0);
-//                String cardId = (String) tableModel.getValueAt(i, 1);
-//                String date = tableModel.getValueAt(i, 2).toString();
-//
-//                if (cardId == null || cardId.isEmpty()) {
-//                    noCardStudents.add(studentName + " [" + date + "]");
-//                }
-//                totalMealsServed++;
-//            }
-//
-//            // Zapis przypadków braku kart
-//            writer.write("Liczba przypadków braku karty: " + noCardStudents.size());
-//            writer.newLine();
-//
-//            for (String entry : noCardStudents) {
-//                writer.write("- " + entry);
-//                writer.newLine();
-//            }
-//
-//            // Zapis danych podsumowujących obiady
-//            writer.write("Liczba wydanych obiadów: " + totalMealsServed);
-//            writer.newLine();
-//            writer.write("=================");
-//            writer.newLine();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    // Metoda zapisująca liczbę wydanych obiadów do obiady.txt
-//    private void saveMealsToFile() {
-//        int totalMealsServed = tableModel.getRowCount(); // Liczba zjedzonych obiadów = liczba wierszy w tabeli
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/obiady.txt", true))) {
-//            writer.write(LocalDateTime.now() + " - Liczba obiadów: " + totalMealsServed);
-//            writer.newLine();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
     /**
      *
      * @param message
@@ -202,42 +153,6 @@ public class MainApp {
             JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
         }
     }
-//    private void saveDataToLogFile() {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/data.txt", true))) {
-//            for (int i = 0; i < tableModel.getRowCount(); i++) {
-//                StringBuilder row = new StringBuilder();
-//                for (int j = 0; j < tableModel.getColumnCount(); j++) {
-//                    row.append(tableModel.getValueAt(i, j)).append(";");
-//                }
-//                writer.write(row.toString());
-//                writer.newLine();
-//            }
-//            writer.write("Data zapisu: " + LocalDateTime.now());
-//            writer.newLine();
-//        } catch (IOException e) {
-//            JOptionPane.showMessageDialog(mainPanel, "Błąd podczas zapisu danych do pliku", "Błąd", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-//    private void generateNoCardReport() {
-//        Set<String> reportLines = new HashSet<>();
-//        for (int i = 0; i < tableModel.getRowCount(); i++) {
-//            Object cardInfo = tableModel.getValueAt(i, 1); // Przykład: druga kolumna to informacja o karcie
-//            Object date = tableModel.getValueAt(i, 2); // Przykład: trzecia kolumna to data
-//            if (cardInfo != null && cardInfo.equals("Brak karty")) {
-//                String dateInfo = date != null ? date.toString() : "Nieznana data";
-//                reportLines.add("Data: " + dateInfo + ", brak karty!");
-//            }
-//        }
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/raport.txt"))) {
-//            for (String line : reportLines) {
-//                writer.write(line);
-//                writer.newLine();
-//            }
-//            JOptionPane.showMessageDialog(mainPanel, "Raport został zapisany do data/raport.txt");
-//        } catch (IOException e) {
-//            JOptionPane.showMessageDialog(mainPanel, "Błąd podczas zapisu raportu", "Błąd", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
     /**
      * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
      */
@@ -269,7 +184,6 @@ public class MainApp {
         if (input == null || input.isEmpty()) return;
         boolean cardFound = false;
         // Sprawdzenie wprowadzonego inputu
-
         for (Student student : studentList) {
             if (student.getCardId().equalsIgnoreCase(input)) {
                 addStudentToTable(student); // Dodanie ucznia do tabeli
@@ -298,36 +212,50 @@ public class MainApp {
                 logNoCardEntry(input);
             }
         }
+
         updateMealsLog();
     }
     private void updateMealsLog() {
-        mealsLogCount++; // Numer kolejny wpisu w logu
+        mealsLogCount++; // Numer kolejnego wpisu w logu
+
+        // Tworzenie wiadomości dla logu
         String message = mealsLogCount + ". " + LocalDateTime.now() +
                 " - Liczba wydanych obiadów: " + totalMeals +
                 " (Dzieci: " + totalChildren + ", Nauczyciele: " + totalTeachers + ", Uczniowie: " + totalStudents + ")";
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(MEALS_FILE_PATH, true))) { // Dopisanie do pliku
-            writer.write(message);
-            writer.newLine();
+        File file = new File("obiady.txt"); // Plik, do którego zapiszemy wiadomość
+        try {
+            // Jeśli plik nie istnieje, utworz go
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            // Dopisz wiadomość do pliku
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) { // 'true' oznacza dopisywanie
+                writer.write(message);
+                writer.newLine();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
         }
     }
     private void logNoCardEntry(String input) {
-        // Sprawdź, czy input dotyczy dzieci (cyfry) lub nauczycieli (cyfry z literą "N").
-        if (input.matches("\\d+") || input.matches("\\d+N")) {
-            System.out.println("Wyjątek: Nie trzeba logować uczniów i nauczycieli bez kart: " + input);
-            return; // Nie logujemy dzieci i nauczycieli bez karty
-        }
+        String message = LocalDateTime.now() + " - Brak karty dla wprowadzonego identyfikatora: " + input;
 
-        // Tworzymy wiadomość logującą brak karty
-        String message = LocalDateTime.now() + " - Brak karty dla klasy/nr dziennika: " + input;
+        File file = new File("raport.txt"); // Plik, do którego zapiszemy wiadomość
+        try {
+            // Jeśli plik nie istnieje, utworz go
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(REPORT_FILE_PATH, true))) {
-            writer.write(message);
-            writer.newLine();
+            // Dopisz wiadomość do pliku
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                writer.write(message);
+                writer.newLine();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
         }
     }
 

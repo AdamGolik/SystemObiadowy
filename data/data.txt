@@ -270,3 +270,54 @@ Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-17T17:42:39.670634
 Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-17T17:43:25.978481
 2024-12-17T17:43:25.979263: Dodano ucznia na podstawie klasy: 8B, numer: 2
 2024-12-17T17:43:25.979669: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T07:37:35.809136: Testowy log - czy działa poprawnie?
+2024-12-18T07:37:46.137859: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:37:46.138391: Dodano ucznia na podstawie ID karty: 0987654321
+2024-12-18T07:37:52.898492: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
+2024-12-18T07:37:52.898849: Dodano ucznia na podstawie klasy: 8B, numer: 1
+2024-12-18T07:37:52.899053: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 1
+2024-12-18T07:37:55.316465: Dodano dzieci: liczba = 2
+2024-12-18T07:37:57.532775: Dodano nauczycieli: liczba = 2
+2024-12-18T07:38:02.082078: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:38:02.082641: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T07:38:02.082750: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T07:38:23.040546: Testowy log - czy działa poprawnie?
+2024-12-18T07:38:32.121138: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:38:32.121697: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T07:38:32.122067: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T07:38:44.827297: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Byrtus, Klasa: 8B, Nr w dzienniku: 1, ID karty: 1234567890
+2024-12-18T07:38:44.827686: Dodano ucznia na podstawie klasy: 8B, numer: 1
+2024-12-18T07:38:44.827986: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 1
+2024-12-18T07:38:59.365405: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:38:59.365903: Dodano ucznia na podstawie ID karty: 0987654321
+2024-12-18T07:40:25.328339: Testowy log - czy działa poprawnie?
+2024-12-18T07:40:31.261034: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:40:31.261722: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T07:40:31.262103: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T07:40:32.290357: Dodano dzieci: liczba = 3
+2024-12-18T07:40:40.957165: Dodano dzieci: liczba = 5
+2024-12-18T07:40:53.756777: Dodano dzieci: liczba = 5
+2024-12-18T07:42:30.379602: Testowy log - czy działa poprawnie?
+2024-12-18T07:42:35.753949: Dodano dzieci: liczba = 4
+2024-12-18T07:43:31.138022: Testowy log - czy działa poprawnie?
+2024-12-18T07:43:35.153275: Dodano dzieci: liczba = 5
+2024-12-18T07:43:38.139153: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:43:38.139779: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T07:43:38.140107: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T07:43:41.718703: Dodano nauczycieli: liczba = 2
+2024-12-18T07:43:46.120983: Dodano studenta do tabeli: Imię: Adam, Nazwisko: Golik, Klasa: 8B, Nr w dzienniku: 2, ID karty: 0987654321
+2024-12-18T07:43:46.121615: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T07:43:46.121928: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T14:57:55.200333: Testowy log - czy działa poprawnie?
+2024-12-18T14:58:45.203339: Testowy log - czy działa poprawnie?
+Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-18T14:58:49.997685
+2024-12-18T14:58:50.006026: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T14:58:50.006395: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+Dodano studenta: Adam, ID karty: 1234567890, Data: 2024-12-18T14:59:32.848647
+2024-12-18T14:59:32.849785: Dodano ucznia na podstawie ID karty: 1234567890
+2024-12-18T14:59:37.344329: Dodano dzieci: liczba = 3
+2024-12-18T14:59:42.610282: Dodano dzieci: liczba = 5
+2024-12-18T15:00:00.125431: Dodano nauczycieli: liczba = 3
+Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-18T15:00:19.857209
+2024-12-18T15:00:19.857929: Dodano ucznia na podstawie klasy: 8B, numer: 2
+2024-12-18T15:00:19.858105: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
