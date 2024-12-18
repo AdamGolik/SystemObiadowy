@@ -321,3 +321,6 @@ Dodano studenta: Adam, ID karty: 1234567890, Data: 2024-12-18T14:59:32.848647
 Dodano studenta: Adam, ID karty: 0987654321, Data: 2024-12-18T15:00:19.857209
 2024-12-18T15:00:19.857929: Dodano ucznia na podstawie klasy: 8B, numer: 2
 2024-12-18T15:00:19.858105: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
+2024-12-18T15:06:16.759690: Testowy log - czy działa poprawnie?
+2024-12-18T15:06:25.234532: Dodano dzieci: liczba = 2
+2024-12-18T15:06:34.932649: Dodano nauczycieli: liczba = 2

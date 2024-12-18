@@ -6,3 +6,5 @@
 6. 2024-12-18T15:00:00.125643 - Liczba wydanych obiadów: 13 (Dzieci: 8, Nauczyciele: 3, Uczniowie: 0)
 7. 2024-12-18T15:00:19.857442 - Liczba wydanych obiadów: 14 (Dzieci: 8, Nauczyciele: 3, Uczniowie: 0)
 8. 2024-12-18T15:00:19.858427 - Liczba wydanych obiadów: 14 (Dzieci: 8, Nauczyciele: 3, Uczniowie: 0)
+1. 2024-12-18T15:06:25.234900 - Liczba wydanych obiadów: 2 (Dzieci: 2, Nauczyciele: 0, Uczniowie: 0)
+2. 2024-12-18T15:06:34.932938 - Liczba wydanych obiadów: 4 (Dzieci: 2, Nauczyciele: 2, Uczniowie: 0)
