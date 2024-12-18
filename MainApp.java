@@ -39,16 +39,6 @@ public class MainApp {
     private static boolean shutdownHookRegistered = false;
     public MainApp() {
         // Inicjalizacja GUI
-        if (!shutdownHookRegistered) {
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    writeSummaryToFile();
-                    System.out.println("Program zamknięto - zapisano dane do sum_obiady.txt");
-                }
-            }));
-            shutdownHookRegistered = true; // Oznacz hook jako zarejestrowany
-        }
         String[] columnNames = {"Imię", "Nazwisko", "Klasa", "Nr w dzienniku", "ID Karty"};
         tableModel = new DefaultTableModel(columnNames, 0);
         dataTable = new JTable(tableModel);
@@ -96,7 +86,16 @@ public class MainApp {
         }
 
         setupAutoInput();
-
+        if (!shutdownHookRegistered) {
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    writeSummaryToFile();
+                    System.out.println("Program zamknięto - zapisano dane do sum_obiady.txt");
+                }
+            }));
+            shutdownHookRegistered = true; // Oznacz hook jako zarejestrowany
+        }
     }
 
     private void setupAutoInput() {

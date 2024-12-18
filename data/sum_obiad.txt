@@ -33,3 +33,10 @@ Liczba obiadów dla nauczycieli: 0
 Liczba obiadów dla uczniów: 0
 Historia wpisów: 14
 
+===== dzień: 18 === miesiąc: 12 === rok: 2024 =====
+Całkowita liczba obiadów: 0
+Liczba obiadów dla dzieci: 0
+Liczba obiadów dla nauczycieli: 0
+Liczba obiadów dla uczniów: 0
+Historia wpisów: 15
+

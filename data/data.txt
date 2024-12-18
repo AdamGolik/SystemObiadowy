@@ -93,3 +93,5 @@ Dodano studenta: Adam, ID karty: 1234567890, Data: 2024-12-18T16:43:56.344773
 2024-12-18T16:47:50.381726: Dodano dzieci: liczba = 8
 2024-12-18T16:48:25.897355: Testowy log - czy działa poprawnie?
 2024-12-18T16:48:29.947194: Dodano dzieci: liczba = 7
+2024-12-18T16:50:16.883082: Testowy log - czy działa poprawnie?
+2024-12-18T16:50:21.832426: Dodano dzieci: liczba = 6
