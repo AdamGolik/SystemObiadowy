@@ -28,6 +28,7 @@ public class MainApp {
     private static final String REP_FILE_PATH = "data/raport.txt";
     private static final String LOG_FILE_PATH = "data/data.txt";
     private static final String SUM_FILE_PATH = "data/Obiady_Suma.txt";
+    private static final String Data_Sum_FILE_PATH = "data/sum_obiad.txt";
     //obiady counting
     private int totalMeals = 0; // Całkowita liczba obiadów
     private int totalChildren = 0; // Liczba obiadów dla dzieci
@@ -35,29 +36,36 @@ public class MainApp {
     private int totalStudents = 0; // Liczba obiadów dla uczniów
     private int mealsLogCount = 0; // Numeracja wpisów w pliku obiady.txt
     private Timer autoInputTimer; // Timer do obsługi opóźnionego dodawania danych
-
+    private static boolean shutdownHookRegistered = false;
     public MainApp() {
         // Inicjalizacja GUI
+        if (!shutdownHookRegistered) {
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    writeSummaryToFile();
+                    System.out.println("Program zamknięto - zapisano dane do sum_obiady.txt");
+                }
+            }));
+            shutdownHookRegistered = true; // Oznacz hook jako zarejestrowany
+        }
         String[] columnNames = {"Imię", "Nazwisko", "Klasa", "Nr w dzienniku", "ID Karty"};
         tableModel = new DefaultTableModel(columnNames, 0);
         dataTable = new JTable(tableModel);
-
+        mainPanel = new JPanel(new BorderLayout());
         configureRowColoring();
         inputField = new JTextField(20);
         addButton = new JButton("Dodaj");
         deleteButton = new JButton("Usuń");
         saveButton = new JButton("Zapisz"); // Przyciski zainicjalizowane
         saveButton.setText("Obiady"); // Bezpieczne wywołanie metody po inicjalizacji
-        saveButton.addActionListener(e -> generateMealSummary());
-
+        saveButton.addActionListener(e -> { writeSummaryToFile(); });
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Wpisz dane:"));
         controlPanel.add(inputField);
         controlPanel.add(addButton);
         controlPanel.add(deleteButton);
         controlPanel.add(saveButton);
-
-        mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(new JScrollPane(dataTable), BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
 
@@ -88,86 +96,7 @@ public class MainApp {
         }
 
         setupAutoInput();
-    }
-    private void sumMealsInDateRange(String startDate, String endDate, String summaryFilePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(MEALS_FILE_PATH))) {
-            int totalMeals = 0;       // Łączna liczba obiadów w zakresie
-            int totalChildren = 0;    // Łączna liczba dzieci w zakresie
-            int totalTeachers = 0;    // Łączna liczba nauczycieli w zakresie
-            int totalStudents = 0;    // Łączna liczba uczniów w zakresie
 
-            LocalDateTime start = LocalDateTime.parse(startDate); // Data początkowa
-            LocalDateTime end = LocalDateTime.parse(endDate);     // Data końcowa
-
-            String line;
-            int previousTotalMeals = 0; // Poprzednia suma obiadów (do obliczenia różnicy)
-
-            while ((line = reader.readLine()) != null) {
-                if (line.matches("\\d+\\. .*")) {
-                    String[] parts = line.split(" - ");
-                    String dateTimeString = parts[0].split("\\. ")[1].trim();
-
-                    LocalDateTime dateTime = LocalDateTime.parse(dateTimeString);
-
-                    // Sprawdź, czy data mieści się w zakresie
-                    if ((dateTime.isEqual(start) || dateTime.isAfter(start)) &&
-                            (dateTime.isEqual(end) || dateTime.isBefore(end))) {
-
-                        // Wyciągnij liczbę wydanych obiadów i szczegóły (dzieci, nauczyciele, uczniowie)
-                        String[] mealParts = parts[1].split("\\(.*\\)");
-                        String mealNumbers = parts[1].substring(parts[1].indexOf("(") + 1, parts[1].indexOf(")"));
-
-                        // Wyciągnij liczbę wydanych obiadów (tutaj jest skumulowana, więc robimy różnicę)
-                        int currentTotalMeals = Integer.parseInt(mealParts[0].replaceAll("[^0-9]", "").trim());
-                        int mealsInLine = currentTotalMeals - previousTotalMeals; // Oblicz różnicę
-                        previousTotalMeals = currentTotalMeals; // Zaktualizuj poprzednią wartość
-
-                        // Parsowanie poszczególnych wartości: dzieci, nauczyciele, uczniowie
-                        String[] quantities = mealNumbers.split(",");
-                        int childrenInLine = 0, teachersInLine = 0, studentsInLine = 0;
-
-                        for (String quantity : quantities) {
-                            String[] keyValue = quantity.trim().split(":");
-                            String key = keyValue[0].trim();
-                            int value = Integer.parseInt(keyValue[1].trim());
-
-                            switch (key) {
-                                case "Dzieci": childrenInLine = value; break;
-                                case "Nauczyciele": teachersInLine = value; break;
-                                case "Uczniowie": studentsInLine = value; break;
-                                default: break;
-                            }
-                        }
-
-                        // Dodaj różnice do całkowitych wartości
-                        totalMeals += mealsInLine;
-                        totalChildren += childrenInLine;
-                        totalTeachers += teachersInLine;
-                        totalStudents += studentsInLine;
-                    }
-                }
-            }
-
-            // Zapis wyników do pliku podsumowującego (summaryFilePath)
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(summaryFilePath, true))) {
-                writer.write("Podsumowanie obiadów od " + startDate + " do " + endDate + ":");
-                writer.newLine();
-                writer.write("Łączna liczba obiadów: " + totalMeals);
-                writer.newLine();
-                writer.write("Dzieci: " + totalChildren);
-                writer.newLine();
-                writer.write("Nauczyciele: " + totalTeachers);
-                writer.newLine();
-                writer.write("Uczniowie: " + totalStudents);
-                writer.newLine();
-                writer.write("=====================");
-                writer.newLine();
-            }
-
-        } catch (IOException | DateTimeParseException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Błąd: " + e.getMessage());
-        }
     }
 
     private void setupAutoInput() {
@@ -239,7 +168,43 @@ public class MainApp {
             JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
         }
     }
+    private void generateMealSummary() {
+        // Wywołanie metody zapisującej sumaryczne dane do pliku
+        saveTotalMealsSummary();
 
+        // Opcjonalnie: komunikat w GUI, że podsumowanie zostało zapisane
+        JOptionPane.showMessageDialog(mainPanel, "Podsumowanie obiadów zapisane do pliku: " + SUM_FILE_PATH);
+    }
+    /**
+     * Zapisuje dane o obiadach (dzień, miesiąc, rok oraz szczegóły dotyczące liczby obiadów) do pliku sum_obiady.txt.
+     * Jeśli plik nie istnieje, zostanie automatycznie utworzony.
+     */
+    private void writeSummaryToFile() {
+        // Pobierz bieżącą datę
+        LocalDateTime now = LocalDateTime.now();
+        String dateHeader = "===== dzień: " + now.getDayOfMonth() + " === miesiąc: " + now.getMonthValue() + " === rok: " + now.getYear() + " =====";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Data_Sum_FILE_PATH, true))) {
+            // Najpierw zapisz nagłówek z datą
+            writer.write(dateHeader);
+            writer.newLine();
+
+            // Zapisz szczegóły dotyczące liczby obiadów
+            writer.write("Całkowita liczba obiadów: " + totalMeals);
+            writer.newLine();
+            writer.write("Liczba obiadów dla dzieci: " + totalChildren);
+            writer.newLine();
+            writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
+            writer.newLine();
+            writer.write("Liczba obiadów dla uczniów: " + totalStudents);
+            writer.newLine();
+            writer.write("Historia wpisów: " + mealsLogCount);
+            writer.newLine();
+            writer.newLine(); // Dodaj pustą linię dla lepszej czytelności
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
      */
@@ -326,6 +291,8 @@ public class MainApp {
         } catch (IOException e) {
             e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
         }
+        saveTotalMealsSummary();
+
     }
 
     private void logNoCardEntry(String input) {
@@ -530,23 +497,25 @@ public class MainApp {
             e.printStackTrace();
         }
     }
-    private void generateMealSummary() {
-        // Wyświetl dialog umożliwiający podanie zakresu dat
-        String startDate = JOptionPane.showInputDialog("Podaj datę początkową w formacie: RRRR-MM-DDTHH:MM:SS");
-        String endDate = JOptionPane.showInputDialog("Podaj datę końcową w formacie: RRRR-MM-DDTHH:MM:SS");
-
-        if (startDate == null || endDate == null || startDate.isEmpty() || endDate.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Zakres dat nie został podany!");
-            return;
-        }
-
-        String summaryFilePath = "suma_obiadów.txt";
-        try {
-            sumMealsInDateRange(startDate, endDate, summaryFilePath);
-            JOptionPane.showMessageDialog(null, "Podsumowanie obiadów zapisano w pliku: " + summaryFilePath);
-        } catch (Exception e) {
+    /**
+     * Zapisuje sumaryczne dane o obiadach do pliku sumarycznego (Obiady_Suma.txt).
+     */
+    private void saveTotalMealsSummary() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SUM_FILE_PATH))) {
+            writer.write("===== Podsumowanie Obiadów =====");
+            writer.newLine();
+            writer.write("Całkowita liczba obiadów: " + totalMeals);
+            writer.newLine();
+            writer.write("Liczba obiadów dla dzieci: " + totalChildren);
+            writer.newLine();
+            writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
+            writer.newLine();
+            writer.write("Liczba obiadów dla uczniów: " + totalStudents);
+            writer.newLine();
+            writer.write("Liczba wpisów w historii logów: " + mealsLogCount);
+            writer.newLine();
+        } catch (IOException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Błąd przy generowaniu podsumowania: " + e.getMessage());
         }
     }
     /**
