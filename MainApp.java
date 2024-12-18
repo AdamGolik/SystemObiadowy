@@ -6,24 +6,28 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class MainApp {
-    private JPanel mainPanel;
-    private JTable dataTable;
-    private JTextField inputField;
-    private JButton addButton, deleteButton, saveButton;
+    private final JPanel mainPanel;
+    private final JTable dataTable;
+    private final JTextField inputField;
+    private final JButton addButton;
+    private final JButton deleteButton;
+    private final JButton saveButton;
 
-    private DefaultTableModel tableModel;
-    private List<Student> studentList = new ArrayList<>();
+    private final DefaultTableModel tableModel;
+    private final List<Student> studentList = new ArrayList<>();
     //data
     private final String CSV_FILE = "data/students.csv";
-    private static final String REPORT_FILE_PATH = "data/raport.txt";
     private static final String MEALS_FILE_PATH = "data/obiady.txt";
     private static final String REP_FILE_PATH = "data/raport.txt";
+    private static final String LOG_FILE_PATH = "data/data.txt";
+    private static final String SUM_FILE_PATH = "data/Obiady_Suma.txt";
     //obiady counting
     private int totalMeals = 0; // Całkowita liczba obiadów
     private int totalChildren = 0; // Liczba obiadów dla dzieci
@@ -31,6 +35,7 @@ public class MainApp {
     private int totalStudents = 0; // Liczba obiadów dla uczniów
     private int mealsLogCount = 0; // Numeracja wpisów w pliku obiady.txt
     private Timer autoInputTimer; // Timer do obsługi opóźnionego dodawania danych
+
     public MainApp() {
         // Inicjalizacja GUI
         String[] columnNames = {"Imię", "Nazwisko", "Klasa", "Nr w dzienniku", "ID Karty"};
@@ -42,7 +47,8 @@ public class MainApp {
         addButton = new JButton("Dodaj");
         deleteButton = new JButton("Usuń");
         saveButton = new JButton("Zapisz"); // Przyciski zainicjalizowane
-        saveButton.setText("Raport"); // Bezpieczne wywołanie metody po inicjalizacji
+        saveButton.setText("Obiady"); // Bezpieczne wywołanie metody po inicjalizacji
+        saveButton.addActionListener(e -> generateMealSummary());
 
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Wpisz dane:"));
@@ -83,6 +89,86 @@ public class MainApp {
 
         setupAutoInput();
     }
+    private void sumMealsInDateRange(String startDate, String endDate, String summaryFilePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(MEALS_FILE_PATH))) {
+            int totalMeals = 0;       // Łączna liczba obiadów w zakresie
+            int totalChildren = 0;    // Łączna liczba dzieci w zakresie
+            int totalTeachers = 0;    // Łączna liczba nauczycieli w zakresie
+            int totalStudents = 0;    // Łączna liczba uczniów w zakresie
+
+            LocalDateTime start = LocalDateTime.parse(startDate); // Data początkowa
+            LocalDateTime end = LocalDateTime.parse(endDate);     // Data końcowa
+
+            String line;
+            int previousTotalMeals = 0; // Poprzednia suma obiadów (do obliczenia różnicy)
+
+            while ((line = reader.readLine()) != null) {
+                if (line.matches("\\d+\\. .*")) {
+                    String[] parts = line.split(" - ");
+                    String dateTimeString = parts[0].split("\\. ")[1].trim();
+
+                    LocalDateTime dateTime = LocalDateTime.parse(dateTimeString);
+
+                    // Sprawdź, czy data mieści się w zakresie
+                    if ((dateTime.isEqual(start) || dateTime.isAfter(start)) &&
+                            (dateTime.isEqual(end) || dateTime.isBefore(end))) {
+
+                        // Wyciągnij liczbę wydanych obiadów i szczegóły (dzieci, nauczyciele, uczniowie)
+                        String[] mealParts = parts[1].split("\\(.*\\)");
+                        String mealNumbers = parts[1].substring(parts[1].indexOf("(") + 1, parts[1].indexOf(")"));
+
+                        // Wyciągnij liczbę wydanych obiadów (tutaj jest skumulowana, więc robimy różnicę)
+                        int currentTotalMeals = Integer.parseInt(mealParts[0].replaceAll("[^0-9]", "").trim());
+                        int mealsInLine = currentTotalMeals - previousTotalMeals; // Oblicz różnicę
+                        previousTotalMeals = currentTotalMeals; // Zaktualizuj poprzednią wartość
+
+                        // Parsowanie poszczególnych wartości: dzieci, nauczyciele, uczniowie
+                        String[] quantities = mealNumbers.split(",");
+                        int childrenInLine = 0, teachersInLine = 0, studentsInLine = 0;
+
+                        for (String quantity : quantities) {
+                            String[] keyValue = quantity.trim().split(":");
+                            String key = keyValue[0].trim();
+                            int value = Integer.parseInt(keyValue[1].trim());
+
+                            switch (key) {
+                                case "Dzieci": childrenInLine = value; break;
+                                case "Nauczyciele": teachersInLine = value; break;
+                                case "Uczniowie": studentsInLine = value; break;
+                                default: break;
+                            }
+                        }
+
+                        // Dodaj różnice do całkowitych wartości
+                        totalMeals += mealsInLine;
+                        totalChildren += childrenInLine;
+                        totalTeachers += teachersInLine;
+                        totalStudents += studentsInLine;
+                    }
+                }
+            }
+
+            // Zapis wyników do pliku podsumowującego (summaryFilePath)
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(summaryFilePath, true))) {
+                writer.write("Podsumowanie obiadów od " + startDate + " do " + endDate + ":");
+                writer.newLine();
+                writer.write("Łączna liczba obiadów: " + totalMeals);
+                writer.newLine();
+                writer.write("Dzieci: " + totalChildren);
+                writer.newLine();
+                writer.write("Nauczyciele: " + totalTeachers);
+                writer.newLine();
+                writer.write("Uczniowie: " + totalStudents);
+                writer.newLine();
+                writer.write("=====================");
+                writer.newLine();
+            }
+
+        } catch (IOException | DateTimeParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Błąd: " + e.getMessage());
+        }
+    }
 
     private void setupAutoInput() {
         inputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -121,12 +207,11 @@ public class MainApp {
             autoInputTimer.start();
         }
     }
+
     /**
-     *
-     * @param message
-     * wpisuje logi
+     * @param message wpisuje logi
      */
-    private static final String LOG_FILE_PATH = "data/data.txt";
+
 
     private void logToFile(String message) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
@@ -136,6 +221,7 @@ public class MainApp {
             e.printStackTrace();
         }
     }
+
     /**
      * Ładuje dane z pliku CSV do pamięci (lista studentList) bez dodawania ich do tabeli.
      */
@@ -153,6 +239,7 @@ public class MainApp {
             JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
         }
     }
+
     /**
      * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
      */
@@ -215,6 +302,7 @@ public class MainApp {
 
         updateMealsLog();
     }
+
     private void updateMealsLog() {
         mealsLogCount++; // Numer kolejnego wpisu w logu
 
@@ -223,7 +311,7 @@ public class MainApp {
                 " - Liczba wydanych obiadów: " + totalMeals +
                 " (Dzieci: " + totalChildren + ", Nauczyciele: " + totalTeachers + ", Uczniowie: " + totalStudents + ")";
 
-        File file = new File("obiady.txt"); // Plik, do którego zapiszemy wiadomość
+        File file = new File(MEALS_FILE_PATH); // Plik, do którego zapiszemy wiadomość
         try {
             // Jeśli plik nie istnieje, utworz go
             if (!file.exists()) {
@@ -239,10 +327,11 @@ public class MainApp {
             e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
         }
     }
+
     private void logNoCardEntry(String input) {
         String message = LocalDateTime.now() + " - Brak karty dla wprowadzonego identyfikatora: " + input;
 
-        File file = new File("raport.txt"); // Plik, do którego zapiszemy wiadomość
+        File file = new File(REP_FILE_PATH); // Plik, do którego zapiszemy wiadomość
         try {
             // Jeśli plik nie istnieje, utworz go
             if (!file.exists()) {
@@ -259,18 +348,19 @@ public class MainApp {
         }
     }
 
-private void addStudentById(String cardId) {
-    for (Student student : studentList) {
-        if (student.getCardId().equals(cardId)) {
-            addStudentToTable(student);
-            logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
-            return;
+    private void addStudentById(String cardId) {
+        for (Student student : studentList) {
+            if (student.getCardId().equals(cardId)) {
+                addStudentToTable(student);
+                logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
+                return;
+            }
         }
+        String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
+        JOptionPane.showMessageDialog(null, errorMessage);
+        logToFile("Błąd: " + errorMessage);
     }
-    String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
-    JOptionPane.showMessageDialog(null, errorMessage);
-    logToFile("Błąd: " + errorMessage);
-}
+
     private void addStudentByClassAndNumber(String className, String classNumber) {
         for (Student student : studentList) {
             if (student.getClassName().equalsIgnoreCase(className) &&
@@ -316,6 +406,7 @@ private void addStudentById(String cardId) {
         }
         configureRowColoring(); // Dodanie kolorowania
     }
+
     /**
      * Dodaje studenta do tabeli w GUI.
      */
@@ -405,6 +496,59 @@ private void addStudentById(String cardId) {
         }
     }
 
+    private void appendTodayDateToFile(String filePath) {
+        try {
+            // Pobierz dzisiejszą datę w formacie "dzień i miesiąc"
+            LocalDateTime now = LocalDateTime.now();
+            String todayHeader = "===== dzień: " + now.getDayOfMonth() + " ==== miesiąc: " + now.getMonthValue() + " =====";
+
+            File file = new File(filePath);
+
+            // Sprawdź, czy plik istnieje i czy zawiera już nagłówek z dzisiejszą datą
+            boolean alreadyLoggedToday = false;
+            if (file.exists() && file.length() > 0) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    String lastLine;
+                    while ((lastLine = reader.readLine()) != null) {
+                        if (lastLine.trim().equals(todayHeader)) {
+                            alreadyLoggedToday = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Jeśli nie ma dzisiejszego nagłówka, dodaj go
+            if (!alreadyLoggedToday) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    writer.write(todayHeader);
+                    writer.newLine();
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void generateMealSummary() {
+        // Wyświetl dialog umożliwiający podanie zakresu dat
+        String startDate = JOptionPane.showInputDialog("Podaj datę początkową w formacie: RRRR-MM-DDTHH:MM:SS");
+        String endDate = JOptionPane.showInputDialog("Podaj datę końcową w formacie: RRRR-MM-DDTHH:MM:SS");
+
+        if (startDate == null || endDate == null || startDate.isEmpty() || endDate.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Zakres dat nie został podany!");
+            return;
+        }
+
+        String summaryFilePath = "suma_obiadów.txt";
+        try {
+            sumMealsInDateRange(startDate, endDate, summaryFilePath);
+            JOptionPane.showMessageDialog(null, "Podsumowanie obiadów zapisano w pliku: " + summaryFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Błąd przy generowaniu podsumowania: " + e.getMessage());
+        }
+    }
     /**
      * Zapisuje aktualne dane z tabeli do pliku CSV.
      */
@@ -425,6 +569,10 @@ private void addStudentById(String cardId) {
 
     public static void main(String[] args) {
         new MainApp().logToFile("Testowy log - czy działa poprawnie?");
+        MainApp app = new MainApp();
+        app.appendTodayDateToFile(LOG_FILE_PATH);
+        app.appendTodayDateToFile(MEALS_FILE_PATH);
+        app.appendTodayDateToFile(REP_FILE_PATH);
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Lista uczniów");
             frame.setContentPane(new MainApp().mainPanel);
