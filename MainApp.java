@@ -4,9 +4,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -61,6 +61,38 @@ public class MainApp {
     controlPanel.add(saveButton);
     mainPanel.add(new JScrollPane(dataTable), BorderLayout.CENTER);
     mainPanel.add(controlPanel, BorderLayout.SOUTH);
+
+    // Dodaj obsługę skrótów klawiszowych:
+    // 1. W polu inputField - Enter wywołuje kliknięcie przycisku "Dodaj"
+    inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "addStudent");
+    inputField.getActionMap().put("addStudent", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        addButton.doClick();
+      }
+    });
+    
+    // 2. W tabeli dataTable - Delete lub Backspace usuwa zaznaczone wiersze
+    KeyStroke deleteKey = KeyStroke.getKeyStroke("DELETE");
+    KeyStroke backspaceKey = KeyStroke.getKeyStroke("BACK_SPACE");
+    dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(deleteKey, "deleteRow");
+    dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(backspaceKey, "deleteRow");
+    dataTable.getActionMap().put("deleteRow", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        deleteSelectedRows();
+      }
+    });
+    
+    // 3. Na głównym panelu - Ctrl+S zapisuje podsumowanie obiadów
+    mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke("control S"), "saveSummary");
+    mainPanel.getActionMap().put("saveSummary", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        writeSummaryToFile();
+      }
+    });
 
     loadStudentData();
 
@@ -142,7 +174,6 @@ public class MainApp {
   /**
    * @param message wpisuje logi
    */
-
   private void logToFile(String message) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
       writer.write(LocalDateTime.now() + ": " + message);
@@ -153,8 +184,7 @@ public class MainApp {
   }
 
   /**
-   * Ładuje dane z pliku CSV do pamięci (lista studentList) bez dodawania ich do
-   * tabeli.
+   * Ładuje dane z pliku CSV do pamięci (lista studentList) bez dodawania ich do tabeli.
    */
   private void loadStudentData() {
     studentList.clear();
@@ -180,15 +210,13 @@ public class MainApp {
   }
 
   /**
-   * Zapisuje dane o obiadach (dzień, miesiąc, rok oraz szczegóły dotyczące liczby
-   * obiadów) do pliku sum_obiady.txt.
+   * Zapisuje dane o obiadach (dzień, miesiąc, rok oraz szczegóły dotyczące liczby obiadów) do pliku sum_obiady.txt.
    * Jeśli plik nie istnieje, zostanie automatycznie utworzony.
    */
   private void writeSummaryToFile() {
     // Pobierz bieżącą datę
     LocalDateTime now = LocalDateTime.now();
-    String dateHeader = "===== dzień: " + now.getDayOfMonth() + " === miesiąc: " + now.getMonthValue() + " === rok: "
-        + now.getYear() + " =====";
+    String dateHeader = "===== dzień: " + now.getDayOfMonth() + " === miesiąc: " + now.getMonthValue() + " === rok: " + now.getYear() + " =====";
 
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(Data_Sum_FILE_PATH, true))) {
       // Najpierw zapisz nagłówek z datą
@@ -213,69 +241,70 @@ public class MainApp {
   }
 
   /**
-   * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do
-   * tabeli.
+   * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
    */
   private void processInput(String input) {
-    if (input.matches("\\d{10}") || input.length() > 8 && input.matches("\\d+")) { // ID Karty
-      addStudentById(input);
-      logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
-    } else if (input.matches("\\d+[A-Z]\\d+")) { // Klasa i numer w dzienniku np. 5A5
-      String classAndLetter = input.replaceFirst("\\d+$", ""); // Wyodrębnia "5A"
-      String number = input.replaceAll("^\\d+[A-Z]", ""); // Wyodrębnia "5"
+    if (input == null || input.trim().isEmpty())
+        return;
+    input = input.trim();
 
-      addStudentByClassAndNumber(classAndLetter, number);
-      logToFile("Przetworzono dane wejściowe dla klasy i numeru: " +
-          classAndLetter + ", Nr: " + number);
-    } else if (input.matches("\\d+N")) { // Liczba nauczycieli
-      int count = Integer.parseInt(input.replaceAll("N", ""));
-      addTeachers(count);
-      logToFile("Dodano nauczycieli: liczba = " + count);
-    } else if (input.matches("\\d+")) { // Liczba dzieci
-      int count = Integer.parseInt(input);
-      addChildren(count);
-      logToFile("Dodano dzieci: liczba = " + count);
+    // 1. Jeśli wejście pasuje do identyfikatora ucznia (ID karty)
+    if (input.matches("\\d{10}") || (input.length() > 8 && input.matches("\\d+"))) { 
+        addStudentById(input);
+        logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
+        return; // Przerywamy dalsze przetwarzanie
+    } 
+    // 2. Jeśli wejście pasuje do formatu klasy i numeru (np. "5A5")
+    else if (input.matches("\\d+[A-Z]\\d+")) { 
+        String classAndLetter = input.replaceFirst("\\d+$", ""); // Wyodrębnia "5A"
+        String number = input.replaceAll("^\\d+[A-Z]", "");       // Wyodrębnia "5"
+        addStudentByClassAndNumber(classAndLetter, number);
+        logToFile("Przetworzono dane wejściowe dla klasy i numeru: " +
+            classAndLetter + ", Nr: " + number);
+        return;
+    } 
+    // 3. Jeśli wejście pasuje do formatu dla nauczycieli (np. "3N")
+    else if (input.matches("\\d+N")) { 
+        int count = Integer.parseInt(input.substring(0, input.length() - 1));
+        addTeachers(count);
+        totalMeals += count;
+        totalTeachers += count;
+        logToFile("Dodano nauczycieli: liczba = " + count);
+        updateMealsLog();
+        return;
+    } 
+    // 4. Jeśli wejście to liczba – traktujemy ją jako liczbę dzieci
+    else if (input.matches("\\d+")) { 
+        int count = Integer.parseInt(input);
+        addChildren(count);
+        totalMeals += count;
+        totalChildren += count;
+        logToFile("Dodano dzieci: liczba = " + count);
+        updateMealsLog();
+        return;
     } else {
-      String errorMessage = "Nieodpowiedni format danych! Dane: " + input;
-      JOptionPane.showMessageDialog(null, errorMessage);
-      logToFile("Błąd: " + errorMessage);
+        String errorMessage = "Nieodpowiedni format danych! Dane: " + input;
+        JOptionPane.showMessageDialog(null, errorMessage);
+        logToFile("Błąd: " + errorMessage);
+        return;
     }
+}
 
-    if (input == null || input.isEmpty())
-      return;
-    boolean cardFound = false;
-    // Sprawdzenie wprowadzonego inputu
+// Modyfikacja metody dodającej ucznia po ID – zwiększamy tylko licznik uczniów,
+// gdyż totalMeals zostanie zwiększone już wewnątrz addStudentToTable
+private void addStudentById(String cardId) {
     for (Student student : studentList) {
-      if (student.getCardId().equalsIgnoreCase(input)) {
-        addStudentToTable(student); // Dodanie ucznia do tabeli
-        totalMeals++; // Zwiększ liczbę wydanych obiadów
-        totalStudents++; // Zwiększ liczbę obiadów dla uczniów
-        cardFound = true;
-        break;
-      }
+        if (student.getCardId().equalsIgnoreCase(cardId)) {
+            addStudentToTable(student); // Ta metoda już zwiększa totalMeals
+            totalStudents++;           // Dodajemy liczbę uczniów
+            logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
+            return;
+        }
     }
-
-    if (!cardFound) {
-      // Przetwarzanie dzieci (np. "20")
-      if (input.matches("\\d+")) {
-        int count = Integer.parseInt(input); // Pobieramy liczbę dzieci
-        totalMeals += count; // Dodajemy do całkowitej liczby obiadów
-        totalChildren += count; // Dodajemy liczbę dzieci
-      }
-      // Przetwarzanie nauczycieli (np. "20N")
-      else if (input.matches("\\d+N")) {
-        int count = Integer.parseInt(input.substring(0, input.length() - 1)); // Pobieramy liczbę nauczycieli
-        totalMeals += count; // Dodajemy do całkowitej liczby obiadów
-        totalTeachers += count; // Dodajemy liczbę nauczycieli
-      }
-      // Brak kategorii - logujemy brak karty
-      else {
-        logNoCardEntry(input);
-      }
-    }
-
-    updateMealsLog();
-  }
+    String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
+    JOptionPane.showMessageDialog(null, errorMessage);
+    logToFile("Błąd: " + errorMessage);
+}
 
   private void updateMealsLog() {
     mealsLogCount++; // Numer kolejnego wpisu w logu
@@ -301,7 +330,6 @@ public class MainApp {
       e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
     }
     saveTotalMealsSummary();
-
   }
 
   private void logNoCardEntry(String input) {
@@ -324,18 +352,6 @@ public class MainApp {
     }
   }
 
-  private void addStudentById(String cardId) {
-    for (Student student : studentList) {
-      if (student.getCardId().equals(cardId)) {
-        addStudentToTable(student);
-        logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
-        return;
-      }
-    }
-    String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
-    JOptionPane.showMessageDialog(null, errorMessage);
-    logToFile("Błąd: " + errorMessage);
-  }
 
   private void addStudentByClassAndNumber(String className, String classNumber) {
     for (Student student : studentList) {
@@ -352,14 +368,6 @@ public class MainApp {
   }
 
   /**
-   * Dodaje ucznia do tabeli na podstawie ID karty.
-   */
-
-  /**
-   * Dodaje ucznia do tabeli na podstawie klasy i numeru w dzienniku.
-   */
-
-  /**
    * Symuluje dodanie dzieci (tylko do tabeli, brak danych w pliku CSV).
    */
   private void addChildren(int count) {
@@ -370,11 +378,7 @@ public class MainApp {
   }
 
   /**
-   * Symuluje dodanie nauczycieli (tylko do tabeli, brak danych w pliku CSV).
-   */
-  /**
-   * Symuluje dodanie nauczycieli (tylko do tabeli, brak rzeczywistych danych w
-   * pliku CSV).
+   * Symuluje dodanie nauczycieli (tylko do tabeli, brak rzeczywistych danych w pliku CSV).
    */
   private void addTeachers(int count) {
     for (int i = 1; i <= count; i++) {
@@ -397,8 +401,7 @@ public class MainApp {
     });
     // Automatyczny zapis danych do pliku data.txt
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
-      writer.write("Dodano studenta: " + student.getFirstName() + ", ID karty: " + student.getCardId() + ", Data: "
-          + LocalDateTime.now());
+      writer.write("Dodano studenta: " + student.getFirstName() + ", ID karty: " + student.getCardId() + ", Data: " + LocalDateTime.now());
       writer.newLine();
     } catch (IOException e) {
       e.printStackTrace();
