@@ -536,7 +536,7 @@ public class MainApp {
     }
 
     public static void main(String[] args) {
-        new MainApp().logToFile("Testowy log - czy działa poprawnie?");
+      //  new MainApp().logToFile("Testowy log - czy działa poprawnie?");
         MainApp app = new MainApp();
         app.appendTodayDateToFile(LOG_FILE_PATH);
         app.appendTodayDateToFile(MEALS_FILE_PATH);
