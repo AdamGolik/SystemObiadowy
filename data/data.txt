@@ -1,9 +1,0 @@
-===== dzień: 10 ==== miesiąc: 2 =====
-Dodano studenta: Adam, ID karty: 0987654321, Data: 2025-02-10T21:57:47.811925
-2025-02-10T21:57:47.819482: Dodano ucznia na podstawie klasy: 8B, numer: 2
-2025-02-10T21:57:47.819772: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
-2025-02-10T21:57:54.540041: Dodano dzieci: liczba = 6
-Dodano studenta: Adam, ID karty: 0987654321, Data: 2025-02-10T21:58:03.928021
-2025-02-10T21:58:03.929339: Dodano ucznia na podstawie klasy: 8B, numer: 2
-2025-02-10T21:58:03.929535: Przetworzono dane wejściowe dla klasy i numeru: 8B, Nr: 2
-2025-02-10T21:58:41.241168: Usunięto wiersz: Imię = Adam, ID karty = 0987654321
