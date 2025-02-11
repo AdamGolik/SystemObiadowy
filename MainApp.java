@@ -4,566 +4,582 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainApp {
-  private final JPanel mainPanel;
-  private final JTable dataTable;
-  private final JTextField inputField;
-  private final JButton addButton;
-  private final JButton deleteButton;
-  private final JButton saveButton;
+    private final JPanel mainPanel;
+    private final JTable dataTable;
+    private final JTextField inputField;
+    private final JButton endButton;
+    private final DefaultTableModel tableModel;
+    private final JLabel totalMealsLabel;  // Etykieta do wyświetlania liczby obiadów
 
-  private final DefaultTableModel tableModel;
-  private final List<Student> studentList = new ArrayList<>();
-  // data
-  private final String CSV_FILE = "data/students.csv";
-  private static final String MEALS_FILE_PATH = "data/obiady.txt";
-  private static final String REP_FILE_PATH = "data/raport.txt";
-  private static final String LOG_FILE_PATH = "data/data.txt";
-  private static final String SUM_FILE_PATH = "data/Obiady_Suma.txt";
-  private static final String Data_Sum_FILE_PATH = "data/sum_obiad.txt";
-  // obiady counting
-  private int totalMeals = 0; // Całkowita liczba obiadów
-  private int totalChildren = 0; // Liczba obiadów dla dzieci
-  private int totalTeachers = 0; // Liczba obiadów dla nauczycieli
-  private int totalStudents = 0; // Liczba obiadów dla uczniów
-  private int mealsLogCount = 0; // Numeracja wpisów w pliku obiady.txt
-  private Timer autoInputTimer; // Timer do obsługi opóźnionego dodawania danych
-  private static boolean shutdownHookRegistered = false;
+    private final List<Student> studentList = new ArrayList<>();
+    // Ścieżki do plików
+    private final String CSV_FILE = "data/students.csv";
+    private static final String MEALS_FILE_PATH = "data/obiady.txt";
+    private static final String REP_FILE_PATH = "data/raport.txt";
+    private static final String LOG_FILE_PATH = "data/data.txt";
+    private static final String SUM_FILE_PATH = "data/Obiady_Suma.txt";
+    private static final String Data_Sum_FILE_PATH = "data/sum_obiad.txt";
+    // Nowy plik z liczbą zapomnianych kart
+    private static final String MISSING_CARD_COUNT_FILE = "data/Zgubiona_Karta.txt";
 
-  public MainApp() {
-    // Inicjalizacja GUI
-    String[] columnNames = { "Imię", "Nazwisko", "Klasa", "Nr w dzienniku", "ID Karty" };
-    tableModel = new DefaultTableModel(columnNames, 0);
-    dataTable = new JTable(tableModel);
-    mainPanel = new JPanel(new BorderLayout());
-    configureRowColoring();
-    inputField = new JTextField(20);
-    addButton = new JButton("Dodaj");
-    deleteButton = new JButton("Usuń");
-    saveButton = new JButton("Zapisz"); // Przyciski zainicjalizowane
-    saveButton.setText("Obiady"); // Bezpieczne wywołanie metody po inicjalizacji
-    saveButton.addActionListener(e -> {
-      writeSummaryToFile();
-    });
-    JPanel controlPanel = new JPanel();
-    controlPanel.add(new JLabel("Wpisz dane:"));
-    controlPanel.add(inputField);
-    controlPanel.add(addButton);
-    controlPanel.add(deleteButton);
-    controlPanel.add(saveButton);
-    mainPanel.add(new JScrollPane(dataTable), BorderLayout.CENTER);
-    mainPanel.add(controlPanel, BorderLayout.SOUTH);
+    // Liczniki
+    private int totalMeals = 0;
+    private int totalChildren = 0;
+    private int totalTeachers = 0;
+    private int totalStudents = 0;
+    private int mealsLogCount = 0;
+    private Timer autoInputTimer;
+    private static boolean shutdownHookRegistered = false;
 
-    // Dodaj obsługę skrótów klawiszowych:
-    // 1. W polu inputField - Enter wywołuje kliknięcie przycisku "Dodaj"
-    inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "addStudent");
-    inputField.getActionMap().put("addStudent", new AbstractAction() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        addButton.doClick();
-      }
-    });
+    public MainApp() {
+        String[] columnNames = { "Imię", "Nazwisko", "Klasa", "Nr w dzienniku", "ID Karty" };
+        tableModel = new DefaultTableModel(columnNames, 0);
+        dataTable = new JTable(tableModel);
+        mainPanel = new JPanel(new BorderLayout());
+        
+        // Dodajemy etykietę na górze do wyświetlania liczby obiadów
+        totalMealsLabel = new JLabel("Liczba obiadów: " + totalMeals);
+        mainPanel.add(totalMealsLabel, BorderLayout.NORTH);
+        
+        configureRowColoring();
+        inputField = new JTextField(20);
+        JButton addButton = new JButton("Dodaj");
+        JButton deleteButton = new JButton("Usuń");
+        // Przycisk "Obiady" został przemianowany na "Koniec"
+        endButton = new JButton("Koniec");
+        // Po kliknięciu przycisku wyświetlamy alert i potwierdzenie zakończenia
+        endButton.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(mainPanel, "Czy na pewno chcesz zakończyć aplikację?", "Potwierdzenie", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION) {
+                writeSummaryToFile();
+                System.exit(0);
+            }
+        });
+        
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(new JLabel("Wpisz dane:"));
+        controlPanel.add(inputField);
+        controlPanel.add(addButton);
+        controlPanel.add(deleteButton);
+        controlPanel.add(endButton);
+        mainPanel.add(new JScrollPane(dataTable), BorderLayout.CENTER);
+        mainPanel.add(controlPanel, BorderLayout.SOUTH);
+        
+        // Skróty klawiszowe:
+        inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "addStudent");
+        inputField.getActionMap().put("addStudent", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addButton.doClick();
+            }
+        });
+        
+        KeyStroke deleteKey = KeyStroke.getKeyStroke("DELETE");
+        KeyStroke backspaceKey = KeyStroke.getKeyStroke("BACK_SPACE");
+        dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(deleteKey, "deleteRow");
+        dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(backspaceKey, "deleteRow");
+        dataTable.getActionMap().put("deleteRow", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteSelectedRows();
+            }
+        });
+        
+        mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+            .put(KeyStroke.getKeyStroke("control S"), "saveSummary");
+        mainPanel.getActionMap().put("saveSummary", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                writeSummaryToFile();
+            }
+        });
+
+        loadStudentData();
+
+        addButton.addActionListener(e -> {
+            String input = inputField.getText().trim();
+            if (!input.isEmpty()) {
+                processInput(input);
+                inputField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Proszę wpisać dane!");
+            }
+        });
+        
+        // Odczyt numeru ostatniego wpisu z pliku obiady.txt
+        try (BufferedReader reader = new BufferedReader(new FileReader(MEALS_FILE_PATH))) {
+            String lastLine = null, line;
+            while ((line = reader.readLine()) != null) {
+                lastLine = line;
+            }
+            if (lastLine != null && lastLine.matches("\\d+\\. .*")) {
+                String[] parts = lastLine.split("\\. ", 2);
+                mealsLogCount = Integer.parseInt(parts[0]);
+            }
+        } catch (IOException | NumberFormatException e) {
+            mealsLogCount = 0;
+        }
+
+        setupAutoInput();
+        if (!shutdownHookRegistered) {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("Program zamknięto");
+            }));
+            shutdownHookRegistered = true;
+        }
+    }
+
+    private void setupAutoInput() {
+        inputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                handleInputChange();
+            }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                handleInputChange();
+            }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                handleInputChange();
+            }
+        });
+    }
+
+    private void handleInputChange() {
+        String input = inputField.getText().trim();
+        if (input.length() > 8 && input.matches("\\d+")) {
+            if (autoInputTimer != null && autoInputTimer.isRunning()) {
+                autoInputTimer.stop();
+            }
+            autoInputTimer = new Timer(300, e -> {
+                if (input.equals(inputField.getText().trim())) {
+                    addStudentById(input);
+                    inputField.setText("");
+                }
+            });
+            autoInputTimer.setRepeats(false);
+            autoInputTimer.start();
+        }
+    }
+
+    /**
+     * Logowanie do pliku LOG_FILE_PATH.
+     */
+    private void logToFile(String message) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
+            writer.write(LocalDateTime.now() + ": " + message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
-    // 2. W tabeli dataTable - Delete lub Backspace usuwa zaznaczone wiersze
-    KeyStroke deleteKey = KeyStroke.getKeyStroke("DELETE");
-    KeyStroke backspaceKey = KeyStroke.getKeyStroke("BACK_SPACE");
-    dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(deleteKey, "deleteRow");
-    dataTable.getInputMap(JComponent.WHEN_FOCUSED).put(backspaceKey, "deleteRow");
-    dataTable.getActionMap().put("deleteRow", new AbstractAction() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        deleteSelectedRows();
-      }
-    });
+    /**
+     * Loguje informacje do raport.txt.
+     */
+    private void logToRaportFile(String message) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(REP_FILE_PATH, true))) {
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
-    // 3. Na głównym panelu - Ctrl+S zapisuje podsumowanie obiadów
-    mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-        .put(KeyStroke.getKeyStroke("control S"), "saveSummary");
-    mainPanel.getActionMap().put("saveSummary", new AbstractAction() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        writeSummaryToFile();
-      }
-    });
-
-    loadStudentData();
-
-    addButton.addActionListener(e -> {
-      String input = inputField.getText().trim();
-      if (!input.isEmpty()) {
-        processInput(input);
-        inputField.setText("");
-      } else {
-        JOptionPane.showMessageDialog(null, "Proszę wpisać dane!");
-      }
-    });
-    // zapisuje pliki
-    try (BufferedReader reader = new BufferedReader(new FileReader(MEALS_FILE_PATH))) {
-      String lastLine = null, line;
-      while ((line = reader.readLine()) != null) {
-        lastLine = line; // Pobierz ostatnią linię
-      }
-
-      if (lastLine != null && lastLine.matches("\\d+\\. .*")) {
-        String[] parts = lastLine.split("\\. ", 2);
-        mealsLogCount = Integer.parseInt(parts[0]); // Ustaw numer ostatniego wpisu
-      }
-    } catch (IOException | NumberFormatException e) {
-      mealsLogCount = 0; // Jeśli plik nie istnieje lub błąd odczytu, ustaw na 0
-    }
-
-    setupAutoInput();
-    if (!shutdownHookRegistered) {
-      Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-        @Override
-        public void run() {
-          // writeSummaryToFile();
-          System.out.println("Program zamknięto");
+    /**
+     * Aktualizuje plik, w którym zapisywane są informacje, kto ile razy zapomniał kartę.
+     */
+    private void updateMissingCardCount(Student student) {
+        Map<String, Integer> missingMap = new HashMap<>();
+        File file = new File(MISSING_CARD_COUNT_FILE);
+        // Odczyt istniejących danych
+        if (file.exists()) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while((line = br.readLine()) != null) {
+                    if(line.contains(":")) {
+                        String[] parts = line.split(":");
+                        if(parts.length >= 2) {
+                            String key = parts[0].trim();
+                            int count = Integer.parseInt(parts[1].trim());
+                            missingMap.put(key, count);
+                        }
+                    }
+                }
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         }
-      }));
-      shutdownHookRegistered = true; // Oznacz hook jako zarejestrowany
-    }
-  }
-
-  private void setupAutoInput() {
-    inputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-      @Override
-      public void insertUpdate(javax.swing.event.DocumentEvent e) {
-        handleInputChange();
-      }
-
-      @Override
-      public void removeUpdate(javax.swing.event.DocumentEvent e) {
-        handleInputChange();
-      }
-
-      @Override
-      public void changedUpdate(javax.swing.event.DocumentEvent e) {
-        handleInputChange();
-      }
-    });
-  }
-
-  private void handleInputChange() {
-    String input = inputField.getText().trim();
-
-    if (input.length() > 8 && input.matches("\\d+")) {
-      if (autoInputTimer != null && autoInputTimer.isRunning()) {
-        autoInputTimer.stop();
-      }
-
-      autoInputTimer = new Timer(300, e -> {
-        if (input.equals(inputField.getText().trim())) {
-          addStudentById(input);
-          inputField.setText("");
+        // Klucz z danymi ucznia
+        String key = student.getFirstName() + " " + student.getLastName() + " " + student.getClassName() + student.getClassNumber();
+        int count = missingMap.getOrDefault(key, 0);
+        missingMap.put(key, count + 1);
+        // Zapisujemy zaktualizowane dane do pliku
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for(Map.Entry<String, Integer> entry : missingMap.entrySet()) {
+                bw.write(entry.getKey() + ": " + entry.getValue());
+                bw.newLine();
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
         }
-      });
-      autoInputTimer.setRepeats(false);
-      autoInputTimer.start();
     }
-  }
 
-  /**
-   * @param message wpisuje logi
-   */
-  private void logToFile(String message) {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
-      writer.write(LocalDateTime.now() + ": " + message);
-      writer.newLine();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Ładuje dane z pliku CSV do pamięci (lista studentList) bez dodawania ich do tabeli.
-   */
-  private void loadStudentData() {
-    studentList.clear();
-    try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE))) {
-      String line;
-      while ((line = br.readLine()) != null) {
-        String[] data = line.split(",");
-        if (data.length == 5) {
-          studentList.add(new Student(data[0], data[1], data[2], data[3], data[4]));
+    /**
+     * Ładuje dane z pliku CSV do listy studentList.
+     */
+    private void loadStudentData() {
+        studentList.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                if (data.length == 5) {
+                    studentList.add(new Student(data[0], data[1], data[2], data[3], data[4]));
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
         }
-      }
-    } catch (IOException e) {
-      JOptionPane.showMessageDialog(null, "Błąd podczas wczytywania pliku CSV: " + e.getMessage());
     }
-  }
 
-  private void generateMealSummary() {
-    // Wywołanie metody zapisującej sumaryczne dane do pliku
-    saveTotalMealsSummary();
-
-    // Opcjonalnie: komunikat w GUI, że podsumowanie zostało zapisane
-    JOptionPane.showMessageDialog(mainPanel, "Podsumowanie obiadów zapisane do pliku: " + SUM_FILE_PATH);
-  }
-
-  /**
-   * Zapisuje dane o obiadach (dzień, miesiąc, rok oraz szczegóły dotyczące liczby obiadów) do pliku sum_obiady.txt.
-   * Jeśli plik nie istnieje, zostanie automatycznie utworzony.
-   */
-  private void writeSummaryToFile() {
-    // Pobierz bieżącą datę
-    LocalDateTime now = LocalDateTime.now();
-    String dateHeader = "===== dzień: " + now.getDayOfMonth() + " === miesiąc: " + now.getMonthValue() + " === rok: " + now.getYear() + " =====";
-
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(Data_Sum_FILE_PATH, true))) {
-      // Najpierw zapisz nagłówek z datą
-      writer.write(dateHeader);
-      writer.newLine();
-
-      // Zapisz szczegóły dotyczące liczby obiadów
-      writer.write("Całkowita liczba obiadów: " + totalMeals);
-      writer.newLine();
-      writer.write("Liczba obiadów dla dzieci: " + totalChildren);
-      writer.newLine();
-      writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
-      writer.newLine();
-      writer.write("Liczba obiadów dla uczniów: " + totalStudents);
-      writer.newLine();
-      writer.write("Historia wpisów: " + mealsLogCount);
-      writer.newLine();
-      writer.newLine(); // Dodaj pustą linię dla lepszej czytelności
-    } catch (IOException e) {
-      e.printStackTrace();
+    private void generateMealSummary() {
+        saveTotalMealsSummary();
+        JOptionPane.showMessageDialog(mainPanel, "Podsumowanie obiadów zapisane do pliku: " + SUM_FILE_PATH);
     }
-  }
 
-  /**
-   * Przetwarza dane wpisane przez użytkownika i dodaje odpowiednią osobę do tabeli.
-   */
-  private void processInput(String input) {
-    if (input == null || input.trim().isEmpty())
-        return;
-    input = input.trim();
-
-    // 1. Jeśli wejście pasuje do identyfikatora ucznia (ID karty)
-    if (input.matches("\\d{10}") || (input.length() > 8 && input.matches("\\d+"))) { 
-        addStudentById(input);
-        logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
-        return; // Przerywamy dalsze przetwarzanie
-    } 
-    // 2. Jeśli wejście pasuje do formatu klasy i numeru (np. "5A5")
-    else if (input.matches("\\d+[A-Z]\\d+")) { 
-        String classAndLetter = input.replaceFirst("\\d+$", ""); // Wyodrębnia "5A"
-        String number = input.replaceAll("^\\d+[A-Z]", "");       // Wyodrębnia "5"
-        addStudentByClassAndNumber(classAndLetter, number);
-        logToFile("Przetworzono dane wejściowe dla klasy i numeru: " +
-            classAndLetter + ", Nr: " + number);
-        return;
-    } 
-    // 3. Jeśli wejście pasuje do formatu dla nauczycieli (np. "3N")
-    else if (input.matches("\\d+N")) { 
-        int count = Integer.parseInt(input.substring(0, input.length() - 1));
-        addTeachers(count);
-        totalMeals += count;
-        totalTeachers += count;
-        logToFile("Dodano nauczycieli: liczba = " + count);
-        updateMealsLog();
-        return;
-    } 
-    // 4. Jeśli wejście to liczba – traktujemy ją jako liczbę dzieci
-    else if (input.matches("\\d+")) { 
-        int count = Integer.parseInt(input);
-        addChildren(count);
-        totalMeals += count;
-        totalChildren += count;
-        logToFile("Dodano dzieci: liczba = " + count);
-        updateMealsLog();
-        return;
-    } else {
-        String errorMessage = "Nieodpowiedni format danych! Dane: " + input;
-        JOptionPane.showMessageDialog(null, errorMessage);
-        logToFile("Błąd: " + errorMessage);
-        return;
+    private void writeSummaryToFile() {
+        LocalDateTime now = LocalDateTime.now();
+        String dateHeader = "===== dzień: " + now.getDayOfMonth() + " === miesiąc: " + now.getMonthValue() + " === rok: " + now.getYear() + " =====";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(Data_Sum_FILE_PATH, true))) {
+            writer.write(dateHeader);
+            writer.newLine();
+            writer.write("Całkowita liczba obiadów: " + totalMeals);
+            writer.newLine();
+            writer.write("Liczba obiadów dla dzieci: " + totalChildren);
+            writer.newLine();
+            writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
+            writer.newLine();
+            writer.write("Liczba obiadów dla uczniów: " + totalStudents);
+            writer.newLine();
+            writer.write("Historia wpisów: " + mealsLogCount);
+            writer.newLine();
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
-// Modyfikacja metody dodającej ucznia po ID – zwiększamy tylko licznik uczniów,
-// gdyż totalMeals zostanie zwiększone już wewnątrz addStudentToTable
-private void addStudentById(String cardId) {
-    for (Student student : studentList) {
-        if (student.getCardId().equalsIgnoreCase(cardId)) {
-            addStudentToTable(student); // Ta metoda już zwiększa totalMeals
-            totalStudents++;           // Dodajemy liczbę uczniów
-            logToFile("Dodano ucznia na podstawie ID karty: " + cardId);
+    /**
+     * Przetwarza dane wpisane przez użytkownika.
+     */
+    private void processInput(String input) {
+        if (input == null || input.trim().isEmpty())
+            return;
+        input = input.trim();
+        // 1. Jeśli wejście pasuje do ID karty (10-cyfrowe lub dłuższe)
+        if (input.matches("\\d{10}") || (input.length() > 8 && input.matches("\\d+"))) { 
+            addStudentById(input);
+            logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
+            return;
+        } 
+        // 2. Jeśli wejście pasuje do formatu klasy i numeru (np. "5A5")
+        else if (input.matches("\\d+[A-Z]\\d+")) { 
+            String classAndLetter = input.replaceFirst("\\d+$", "");
+            String number = input.replaceAll("^\\d+[A-Z]", "");
+            addStudentByClassAndNumber(classAndLetter, number);
+            return;
+        } 
+        // 3. Jeśli wejście pasuje do formatu dla nauczycieli (np. "3N")
+        else if (input.matches("\\d+N")) { 
+            int count = Integer.parseInt(input.substring(0, input.length() - 1));
+            addTeachers(count);
+            logToFile("Dodano nauczycieli: liczba = " + count);
+            return;
+        } 
+        // 4. Jeśli wejście to liczba – traktujemy ją jako liczbę dzieci
+        else if (input.matches("\\d+")) { 
+            int count = Integer.parseInt(input);
+            addChildren(count);
+            logToFile("Dodano dzieci: liczba = " + count);
+            return;
+        } else {
+            String errorMessage = "Nieodpowiedni format danych! Dane: " + input;
+            JOptionPane.showMessageDialog(null, errorMessage);
+            logToFile("Błąd: " + errorMessage);
             return;
         }
     }
-    String errorMessage = "Nie znaleziono ucznia z ID: " + cardId;
-    JOptionPane.showMessageDialog(null, errorMessage);
-    logToFile("Błąd: " + errorMessage);
-}
 
-  private void updateMealsLog() {
-    mealsLogCount++; // Numer kolejnego wpisu w logu
-
-    // Tworzenie wiadomości dla logu
-    String message = mealsLogCount + ". " + LocalDateTime.now() +
-        " - Liczba wydanych obiadów: " + totalMeals +
-        " (Dzieci: " + totalChildren + ", Nauczyciele: " + totalTeachers + ", Uczniowie: " + totalStudents + ")";
-
-    File file = new File(MEALS_FILE_PATH); // Plik, do którego zapiszemy wiadomość
-    try {
-      // Jeśli plik nie istnieje, utworz go
-      if (!file.exists()) {
-        file.createNewFile();
-      }
-
-      // Dopisz wiadomość do pliku
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) { // 'true' oznacza dopisywanie
-        writer.write(message);
-        writer.newLine();
-      }
-    } catch (IOException e) {
-      e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
-    }
-    saveTotalMealsSummary();
-  }
-
-  private void logNoCardEntry(String input) {
-    String message = LocalDateTime.now() + " - Brak karty dla wprowadzonego identyfikatora: " + input;
-
-    File file = new File(REP_FILE_PATH); // Plik, do którego zapiszemy wiadomość
-    try {
-      // Jeśli plik nie istnieje, utworz go
-      if (!file.exists()) {
-        file.createNewFile();
-      }
-
-      // Dopisz wiadomość do pliku
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-        writer.write(message);
-        writer.newLine();
-      }
-    } catch (IOException e) {
-      e.printStackTrace(); // Obsługa błędów wejścia/wyjścia
-    }
-  }
-
-
-  private void addStudentByClassAndNumber(String className, String classNumber) {
-    for (Student student : studentList) {
-      if (student.getClassName().equalsIgnoreCase(className) &&
-          student.getClassNumber().equals(classNumber)) {
-        addStudentToTable(student);
-        logToFile("Dodano ucznia na podstawie klasy: " + className + ", numer: " + classNumber);
-        return;
-      }
-    }
-    String errorMessage = "Nie znaleziono ucznia w klasie: " + className + ", nr: " + classNumber;
-    JOptionPane.showMessageDialog(null, errorMessage);
-    logToFile("Błąd: " + errorMessage);
-  }
-
-  /**
-   * Symuluje dodanie dzieci (tylko do tabeli, brak danych w pliku CSV).
-   */
-  private void addChildren(int count) {
-    for (int i = 1; i <= count; i++) {
-      tableModel.addRow(new Object[] { "Dziecko" + i, "?", "?", "?", "brak" });
-    }
-    configureRowColoring();
-  }
-
-  /**
-   * Symuluje dodanie nauczycieli (tylko do tabeli, brak rzeczywistych danych w pliku CSV).
-   */
-  private void addTeachers(int count) {
-    for (int i = 1; i <= count; i++) {
-      String teacherName = "Nauczyciel" + i; // Generowanie nazwy
-      tableModel.addRow(new Object[] { teacherName, "Nowak", "Brak", "Brak", "Brak" });
-    }
-    configureRowColoring(); // Dodanie kolorowania
-  }
-
-  /**
-   * Dodaje studenta do tabeli w GUI.
-   */
-  private void addStudentToTable(Student student) {
-    tableModel.addRow(new Object[] {
-        student.getFirstName(),
-        student.getLastName(),
-        student.getClassName(),
-        student.getClassNumber(),
-        student.getCardId()
-    });
-    // Automatyczny zapis danych do pliku data.txt
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
-      writer.write("Dodano studenta: " + student.getFirstName() + ", ID karty: " + student.getCardId() + ", Data: " + LocalDateTime.now());
-      writer.newLine();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    totalMeals++; // Zwiększ licznik obiadów za każdą dodaną osobę
-    updateMealsLog(); // Aktualizuj liczbę obiadów w obiady.txt
-    configureRowColoring(); // Kolorowanie wierszy
-  }
-
-  /**
-   * Kolorowanie wierszy w tabeli.
-   * Zielony: Uczeń dodany po raz pierwszy.
-   * Czerwony: Duplikat danych.
-   */
-  private void configureRowColoring() {
-    dataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-      @Override
-      public Component getTableCellRendererComponent(JTable table, Object value,
-          boolean isSelected, boolean hasFocus, int row, int column) {
-        Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        String cardId = (String) table.getValueAt(row, 4); // ID karty
-        String name = (String) table.getValueAt(row, 0); // "Imię"
-
-        // Sprawdź identyfikatory dla duplikatów
-        Set<String> uniqueIds = new HashSet<>();
-        boolean isDuplicate = false;
-        for (int i = 0; i < table.getRowCount(); i++) {
-          String id = (String) table.getValueAt(i, 4);
-          if (!uniqueIds.add(id) && id.equals(cardId) && id != null && !id.isEmpty()) {
-            isDuplicate = true;
-            break;
-          }
-        }
-
-        // Sprawdzenie, czy jest to dziecko, nauczyciel czy uczeń
-        if (name != null && name.startsWith("Dziecko")) {
-          cell.setBackground(Color.BLUE); // Dzieci na niebiesko
-          cell.setForeground(Color.WHITE); // Biały tekst
-        } else if (name != null && name.startsWith("Nauczyciel")) {
-          cell.setBackground(Color.LIGHT_GRAY); // Nauczyciele na szaro
-          cell.setForeground(Color.BLACK); // Czarny tekst
-        } else if (isDuplicate) {
-          cell.setBackground(Color.RED); // Powtórzenia na czerwono
-          cell.setForeground(Color.BLACK);
-        } else {
-          cell.setBackground(Color.GREEN); // Brak powtórzeń na zielono
-          cell.setForeground(Color.BLACK);
-        }
-
-        // Zachowaj kolor zaznaczonego wiersza, niezależnie od statusu
-        if (isSelected) {
-          cell.setBackground(Color.ORANGE);
-          cell.setForeground(Color.BLACK);
-        }
-
-        return cell;
-      }
-    });
-  }
-
-  /**
-   * Usuwanie zaznaczonych wierszy z tabeli.
-   */
-  private void deleteSelectedRows() {
-    int[] selectedRows = dataTable.getSelectedRows();
-    for (int i = selectedRows.length - 1; i >= 0; i--) {
-      String name = (String) dataTable.getValueAt(selectedRows[i], 0);
-      String cardId = (String) dataTable.getValueAt(selectedRows[i], 4);
-
-      // Dodaj logowanie informacji o usunięciu
-      logToFile("Usunięto wiersz: Imię = " + name + ", ID karty = " + cardId);
-      tableModel.removeRow(selectedRows[i]);
-    }
-  }
-
-  private void appendTodayDateToFile(String filePath) {
-    try {
-      // Pobierz dzisiejszą datę w formacie "dzień i miesiąc"
-      LocalDateTime now = LocalDateTime.now();
-      String todayHeader = "===== dzień: " + now.getDayOfMonth() + " ==== miesiąc: " + now.getMonthValue() + " =====";
-
-      File file = new File(filePath);
-
-      // Sprawdź, czy plik istnieje i czy zawiera już nagłówek z dzisiejszą datą
-      boolean alreadyLoggedToday = false;
-      if (file.exists() && file.length() > 0) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-          String lastLine;
-          while ((lastLine = reader.readLine()) != null) {
-            if (lastLine.trim().equals(todayHeader)) {
-              alreadyLoggedToday = true;
-              break;
+    /**
+     * Dodaje ucznia na podstawie ID karty.
+     * Jeśli ucznia nie znaleziono, loguje komunikat o zapomnianej karcie.
+     */
+    private void addStudentById(String cardId) {
+        for (Student student : studentList) {
+            if (student.getCardId().equalsIgnoreCase(cardId)) {
+                addStudentToTable(student);
+                totalStudents++;
+                logToFile("Dodano ucznia: " + student.getFirstName() + " " + student.getLastName() +
+                          " (ID: " + cardId + ")");
+                return;
             }
-          }
         }
-      }
+        // Jeśli ucznia nie znaleziono – zakładamy, że zapomniał karty
+        String message = LocalDateTime.now() + " - Uczeń o identyfikatorze " + cardId + " zapomniał karty";
+        logToRaportFile(message);
+        JOptionPane.showMessageDialog(null, "Nie znaleziono ucznia z ID: " + cardId + ". Być może zapomniał karty.");
+    }
 
-      // Jeśli nie ma dzisiejszego nagłówka, dodaj go
-      if (!alreadyLoggedToday) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-          writer.write(todayHeader);
-          writer.newLine();
+    /**
+     * Dodaje ucznia na podstawie klasy i numeru.
+     * Uczniu dodanemu w ten sposób przypisujemy log o zapomnianej karcie,
+     * który zawiera dane: klasa i numer oraz (imię nazwisko).
+     * Dodatkowo aktualizujemy plik z liczbą zapomnianych kart.
+     */
+    private void addStudentByClassAndNumber(String className, String classNumber) {
+        for (Student student : studentList) {
+            if (student.getClassName().equalsIgnoreCase(className) &&
+                student.getClassNumber().equals(classNumber)) {
+                addStudentToTable(student);
+                logToFile("Dodano ucznia: " + student.getFirstName() + " " + student.getLastName() +
+                          " (klasa: " + student.getClassName() + ", nr: " + student.getClassNumber() + ")");
+                // Logowanie informacji, że uczeń zapomniał kartę
+                String message = LocalDateTime.now() + " - Uczeń klasy " + student.getClassName() + student.getClassNumber() +
+                        " zapomniał kartę (" + student.getFirstName() + " " + student.getLastName() + ")";
+                logToRaportFile(message);
+                updateMissingCardCount(student);
+                return;
+            }
         }
-      }
-
-    } catch (IOException e) {
-      e.printStackTrace();
+        String errorMessage = "Nie znaleziono ucznia w klasie: " + className + ", nr: " + classNumber;
+        JOptionPane.showMessageDialog(null, errorMessage);
+        logToFile("Błąd: " + errorMessage);
     }
-  }
 
-  /**
-   * Zapisuje sumaryczne dane o obiadach do pliku sumarycznego (Obiady_Suma.txt).
-   */
-  private void saveTotalMealsSummary() {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(SUM_FILE_PATH))) {
-      writer.write("===== Podsumowanie Obiadów =====");
-      writer.newLine();
-      writer.write("Całkowita liczba obiadów: " + totalMeals);
-      writer.newLine();
-      writer.write("Liczba obiadów dla dzieci: " + totalChildren);
-      writer.newLine();
-      writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
-      writer.newLine();
-      writer.write("Liczba obiadów dla uczniów: " + totalStudents);
-      writer.newLine();
-      writer.write("Liczba wpisów w historii logów: " + mealsLogCount);
-      writer.newLine();
-    } catch (IOException e) {
-      e.printStackTrace();
+    private void addChildren(int count) {
+        for (int i = 1; i <= count; i++) {
+            tableModel.addRow(new Object[] { "Dziecko" + i, "?", "?", "?", "brak" });
+        }
+        totalMeals += count;
+        totalChildren += count;
+        configureRowColoring();
+        updateMealsLog();
     }
-  }
 
-  /**
-   * Zapisuje aktualne dane z tabeli do pliku CSV.
-   */
-  private void saveStudentData() {
-    try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE))) {
-      for (int i = 0; i < tableModel.getRowCount(); i++) {
-        bw.write(tableModel.getValueAt(i, 0) + "," + tableModel.getValueAt(i, 1) + "," +
-            tableModel.getValueAt(i, 2) + "," + tableModel.getValueAt(i, 3) + "," +
-            tableModel.getValueAt(i, 4));
-        bw.newLine();
-      }
-      logToFile("Zapisano dane do pliku CSV: " + CSV_FILE);
-    } catch (IOException e) {
-      JOptionPane.showMessageDialog(null, "Błąd podczas zapisywania pliku CSV: " + e.getMessage());
-      logToFile("Błąd: Podczas zapisywania pliku CSV: " + e.getMessage());
+    private void addTeachers(int count) {
+        for (int i = 1; i <= count; i++) {
+            String teacherName = "Nauczyciel" + i;
+            tableModel.addRow(new Object[] { teacherName, "Nowak", "Brak", "Brak", "Brak" });
+        }
+        totalMeals += count;
+        totalTeachers += count;
+        configureRowColoring();
+        updateMealsLog();
     }
-  }
 
-  public static void main(String[] args) {
-    // new MainApp().logToFile("Testowy log - czy działa poprawnie?");
-    MainApp app = new MainApp();
-    app.appendTodayDateToFile(LOG_FILE_PATH);
-    app.appendTodayDateToFile(MEALS_FILE_PATH);
-    app.appendTodayDateToFile(REP_FILE_PATH);
-    SwingUtilities.invokeLater(() -> {
-      JFrame frame = new JFrame("Lista uczniów");
-      frame.setContentPane(new MainApp().mainPanel);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.pack();
-      frame.setVisible(true);
-    });
-  }
+    private void addStudentToTable(Student student) {
+        tableModel.addRow(new Object[] {
+            student.getFirstName(),
+            student.getLastName(),
+            student.getClassName(),
+            student.getClassNumber(),
+            student.getCardId()
+        });
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE_PATH, true))) {
+            writer.write("Dodano studenta: " + student.getFirstName() + ", ID karty: " + student.getCardId() +
+                         ", Data: " + LocalDateTime.now());
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        totalMeals++;
+        updateMealsLog();
+        configureRowColoring();
+    }
+
+    private void configureRowColoring() {
+        dataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus, int row, int column) {
+                Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                String cardId = (String) table.getValueAt(row, 4);
+                String name = (String) table.getValueAt(row, 0);
+                Set<String> uniqueIds = new HashSet<>();
+                boolean isDuplicate = false;
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    String id = (String) table.getValueAt(i, 4);
+                    if (!uniqueIds.add(id) && id.equals(cardId) && id != null && !id.isEmpty()) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                if (name != null && name.startsWith("Dziecko")) {
+                    cell.setBackground(Color.BLUE);
+                    cell.setForeground(Color.WHITE);
+                } else if (name != null && name.startsWith("Nauczyciel")) {
+                    cell.setBackground(Color.LIGHT_GRAY);
+                    cell.setForeground(Color.BLACK);
+                } else if (isDuplicate) {
+                    cell.setBackground(Color.RED);
+                    cell.setForeground(Color.BLACK);
+                } else {
+                    cell.setBackground(Color.GREEN);
+                    cell.setForeground(Color.BLACK);
+                }
+                if (isSelected) {
+                    cell.setBackground(Color.ORANGE);
+                    cell.setForeground(Color.BLACK);
+                }
+                return cell;
+            }
+        });
+    }
+
+    private void deleteSelectedRows() {
+        int[] selectedRows = dataTable.getSelectedRows();
+        for (int i = selectedRows.length - 1; i >= 0; i--) {
+            String name = (String) dataTable.getValueAt(selectedRows[i], 0);
+            String cardId = (String) dataTable.getValueAt(selectedRows[i], 4);
+            logToFile("Usunięto wiersz: Imię = " + name + ", ID karty = " + cardId);
+            if (name != null) {
+                if (name.startsWith("Dziecko")) {
+                    totalMeals--;
+                    totalChildren--;
+                } else if (name.startsWith("Nauczyciel")) {
+                    totalMeals--;
+                    totalTeachers--;
+                } else {
+                    totalMeals--;
+                    totalStudents--;
+                }
+            }
+            tableModel.removeRow(selectedRows[i]);
+        }
+        updateMealsLog();
+    }
+
+    private void updateMealsLog() {
+        mealsLogCount++;
+        String message = mealsLogCount + ". " + LocalDateTime.now() +
+                " - Liczba wydanych obiadów: " + totalMeals +
+                " (Dzieci: " + totalChildren + ", Nauczyciele: " + totalTeachers + ", Uczniowie: " + totalStudents + ")";
+        File file = new File(MEALS_FILE_PATH);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                writer.write(message);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        saveTotalMealsSummary();
+        updateTotalMealsLabel();
+    }
+
+    /**
+     * Aktualizuje etykietę wyświetlającą liczbę obiadów.
+     */
+    private void updateTotalMealsLabel() {
+        totalMealsLabel.setText("Liczba obiadów: " + totalMeals);
+    }
+
+    private void appendTodayDateToFile(String filePath) {
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            String todayHeader = "===== dzień: " + now.getDayOfMonth() + " ==== miesiąc: " + now.getMonthValue() + " =====";
+            File file = new File(filePath);
+            boolean alreadyLoggedToday = false;
+            if (file.exists() && file.length() > 0) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                    String lastLine;
+                    while ((lastLine = reader.readLine()) != null) {
+                        if (lastLine.trim().equals(todayHeader)) {
+                            alreadyLoggedToday = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!alreadyLoggedToday) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    writer.write(todayHeader);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveTotalMealsSummary() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(SUM_FILE_PATH))) {
+            writer.write("===== Podsumowanie Obiadów =====");
+            writer.newLine();
+            writer.write("Całkowita liczba obiadów: " + totalMeals);
+            writer.newLine();
+            writer.write("Liczba obiadów dla dzieci: " + totalChildren);
+            writer.newLine();
+            writer.write("Liczba obiadów dla nauczycieli: " + totalTeachers);
+            writer.newLine();
+            writer.write("Liczba obiadów dla uczniów: " + totalStudents);
+            writer.newLine();
+            writer.write("Liczba wpisów w historii logów: " + mealsLogCount);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveStudentData() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CSV_FILE))) {
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                bw.write(tableModel.getValueAt(i, 0) + "," + tableModel.getValueAt(i, 1) + "," +
+                         tableModel.getValueAt(i, 2) + "," + tableModel.getValueAt(i, 3) + "," +
+                         tableModel.getValueAt(i, 4));
+                bw.newLine();
+            }
+            logToFile("Zapisano dane do pliku CSV: " + CSV_FILE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Błąd podczas zapisywania pliku CSV: " + e.getMessage());
+            logToFile("Błąd: Podczas zapisywania pliku CSV: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        MainApp app = new MainApp();
+        app.appendTodayDateToFile(LOG_FILE_PATH);
+        app.appendTodayDateToFile(MEALS_FILE_PATH);
+        app.appendTodayDateToFile(REP_FILE_PATH);
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Lista uczniów");
+            frame.setContentPane(new MainApp().mainPanel);
+            // Ustawiamy tryb zamykania okna na DO_NOTHING_ON_CLOSE i komunikat o konieczności kliknięcia przycisku "Koniec"
+            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    JOptionPane.showMessageDialog(frame, "Aby zamknąć aplikację, kliknij przycisk 'Koniec'");
+                }
+            });
+            frame.pack();
+            frame.setVisible(true);
+        });
+    }
 }
