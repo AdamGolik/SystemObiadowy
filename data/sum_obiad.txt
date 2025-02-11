@@ -1,7 +1,0 @@
-===== dzień: 10 === miesiąc: 2 === rok: 2025 =====
-Całkowita liczba obiadów: 8
-Liczba obiadów dla dzieci: 6
-Liczba obiadów dla nauczycieli: 0
-Liczba obiadów dla uczniów: 0
-Historia wpisów: 3
-
