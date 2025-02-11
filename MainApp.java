@@ -583,3 +583,4 @@ public class MainApp {
         });
     }
 }
+//adam g + lekko chatgpt to robił 
