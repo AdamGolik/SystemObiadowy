@@ -31,7 +31,7 @@ public class MainApp {
     private static final String SUM_FILE_PATH = "data/Obiady_Suma.txt";
     private static final String Data_Sum_FILE_PATH = "data/sum_obiad.txt";
     // Nowy plik z liczbą zapomnianych kart
-    private static final String MISSING_CARD_COUNT_FILE = "data/Zgubiona_Karta.txt";
+    private static final String MISSING_CARD_COUNT_FILE = "data/missingCardCount.txt";
 
     // Liczniki
     private int totalMeals = 0;
@@ -284,6 +284,7 @@ public class MainApp {
 
     /**
      * Przetwarza dane wpisane przez użytkownika.
+     * Modyfikacje: przyjmujemy zarówno małe, jak i duże litery.
      */
     private void processInput(String input) {
         if (input == null || input.trim().isEmpty())
@@ -295,15 +296,19 @@ public class MainApp {
             logToFile("Przetworzono dane wejściowe dla ID karty: " + input);
             return;
         } 
-        // 2. Jeśli wejście pasuje do formatu klasy i numeru (np. "5A5")
-        else if (input.matches("\\d+[A-Z]\\d+")) { 
+        // 2. Jeśli wejście pasuje do formatu klasy i numeru (np. "5A5" lub "5a5")
+        else if (input.matches("(?i)\\d+[A-Z]\\d+")) { 
+            // Konwersja do standardowego formatu (wszystko na wielkie litery)
+            input = input.toUpperCase();
             String classAndLetter = input.replaceFirst("\\d+$", "");
             String number = input.replaceAll("^\\d+[A-Z]", "");
             addStudentByClassAndNumber(classAndLetter, number);
             return;
         } 
-        // 3. Jeśli wejście pasuje do formatu dla nauczycieli (np. "3N")
-        else if (input.matches("\\d+N")) { 
+        // 3. Jeśli wejście pasuje do formatu dla nauczycieli (np. "8N" lub "8n")
+        else if (input.matches("(?i)\\d+N")) { 
+            // Konwersja do wielkich liter
+            input = input.toUpperCase();
             int count = Integer.parseInt(input.substring(0, input.length() - 1));
             addTeachers(count);
             logToFile("Dodano nauczycieli: liczba = " + count);
@@ -583,4 +588,3 @@ public class MainApp {
         });
     }
 }
-//adam g + lekko chatgpt to robił 
