@@ -66,7 +66,7 @@ public class MainApp {
                 System.exit(0);
             }
         });
-        
+
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Wpisz dane:"));
         controlPanel.add(inputField);
@@ -75,7 +75,7 @@ public class MainApp {
         controlPanel.add(endButton);
         mainPanel.add(new JScrollPane(dataTable), BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.SOUTH);
-        
+
         // Skróty klawiszowe:
         inputField.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("ENTER"), "addStudent");
         inputField.getActionMap().put("addStudent", new AbstractAction() {
@@ -159,11 +159,11 @@ public class MainApp {
 
     private void handleInputChange() {
         String input = inputField.getText().trim();
-        if (input.length() > 8 && input.matches("\\d+")) {
+        if (input.length() > 3 && input.matches("\\d+")) {
             if (autoInputTimer != null && autoInputTimer.isRunning()) {
                 autoInputTimer.stop();
             }
-            autoInputTimer = new Timer(300, e -> {
+            autoInputTimer = new Timer(100, e -> {
                 if (input.equals(inputField.getText().trim())) {
                     addStudentById(input);
                     inputField.setText("");

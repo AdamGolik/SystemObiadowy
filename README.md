@@ -70,7 +70,7 @@ cd ~/Desktop/Projects/java/app/app-to-stear-web/FullMoodProject/SystemObiadowy
 ```
 3. Skompiluj pliki źródłowe:
 ```shell script
-javac -d . src/com/example/mealapp/*.java
+javac -d . *.java
 ```
 4. Utwórz plik JAR:
 ```shell script
