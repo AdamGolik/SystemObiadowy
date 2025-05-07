@@ -1,0 +1,21 @@
+===== dzień: 27 === miesiąc: 4 === rok: 2025 =====
+Całkowita liczba obiadów: 6
+Liczba obiadów dla dzieci: 0
+Liczba obiadów dla nauczycieli: 5
+Liczba obiadów dla uczniów: 1
+Historia wpisów: 7
+
+===== dzień: 27 === miesiąc: 4 === rok: 2025 =====
+Całkowita liczba obiadów: 8
+Liczba obiadów dla dzieci: 3
+Liczba obiadów dla nauczycieli: 0
+Liczba obiadów dla uczniów: 1
+Historia wpisów: 13
+
+===== dzień: 27 === miesiąc: 4 === rok: 2025 =====
+Całkowita liczba obiadów: 3
+Liczba obiadów dla dzieci: 0
+Liczba obiadów dla nauczycieli: 0
+Liczba obiadów dla uczniów: 0
+Historia wpisów: 16
+

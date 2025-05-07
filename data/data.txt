@@ -1,0 +1,175 @@
+===== dzień: 27 ==== miesiąc: 4 =====
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T19:55:46.396331
+2025-04-27T19:55:46.405853: Dodano ucznia: Adam Golik (ID: 1234)
+2025-04-27T19:56:58.429877: Dodano dzieci: liczba = 10
+2025-04-27T19:57:08.585875: Dodano dzieci: liczba = 133
+2025-04-27T19:57:13.783734: Usunięto wiersz: Imię = Dziecko133, ID karty = brak
+2025-04-27T19:57:13.784178: Usunięto wiersz: Imię = Dziecko132, ID karty = brak
+2025-04-27T19:57:13.784486: Usunięto wiersz: Imię = Dziecko131, ID karty = brak
+2025-04-27T19:57:13.784646: Usunięto wiersz: Imię = Dziecko130, ID karty = brak
+2025-04-27T19:57:13.784796: Usunięto wiersz: Imię = Dziecko129, ID karty = brak
+2025-04-27T19:57:13.784942: Usunięto wiersz: Imię = Dziecko128, ID karty = brak
+2025-04-27T19:57:13.785085: Usunięto wiersz: Imię = Dziecko127, ID karty = brak
+2025-04-27T19:57:13.785236: Usunięto wiersz: Imię = Dziecko126, ID karty = brak
+2025-04-27T19:57:13.785380: Usunięto wiersz: Imię = Dziecko125, ID karty = brak
+2025-04-27T19:57:13.785523: Usunięto wiersz: Imię = Dziecko124, ID karty = brak
+2025-04-27T19:57:13.785662: Usunięto wiersz: Imię = Dziecko123, ID karty = brak
+2025-04-27T19:57:13.785802: Usunięto wiersz: Imię = Dziecko122, ID karty = brak
+2025-04-27T19:57:13.785944: Usunięto wiersz: Imię = Dziecko121, ID karty = brak
+2025-04-27T19:57:13.786085: Usunięto wiersz: Imię = Dziecko120, ID karty = brak
+2025-04-27T19:57:13.786229: Usunięto wiersz: Imię = Dziecko119, ID karty = brak
+2025-04-27T19:57:13.786361: Usunięto wiersz: Imię = Dziecko118, ID karty = brak
+2025-04-27T19:57:13.786495: Usunięto wiersz: Imię = Dziecko117, ID karty = brak
+2025-04-27T19:57:13.786618: Usunięto wiersz: Imię = Dziecko116, ID karty = brak
+2025-04-27T19:57:13.786785: Usunięto wiersz: Imię = Dziecko115, ID karty = brak
+2025-04-27T19:57:13.786911: Usunięto wiersz: Imię = Dziecko114, ID karty = brak
+2025-04-27T19:57:13.787035: Usunięto wiersz: Imię = Dziecko113, ID karty = brak
+2025-04-27T19:57:13.787212: Usunięto wiersz: Imię = Dziecko112, ID karty = brak
+2025-04-27T19:57:13.787360: Usunięto wiersz: Imię = Dziecko111, ID karty = brak
+2025-04-27T19:57:13.787507: Usunięto wiersz: Imię = Dziecko110, ID karty = brak
+2025-04-27T19:57:13.787649: Usunięto wiersz: Imię = Dziecko109, ID karty = brak
+2025-04-27T19:57:13.787789: Usunięto wiersz: Imię = Dziecko108, ID karty = brak
+2025-04-27T19:57:13.787926: Usunięto wiersz: Imię = Dziecko107, ID karty = brak
+2025-04-27T19:57:13.788051: Usunięto wiersz: Imię = Dziecko106, ID karty = brak
+2025-04-27T19:57:13.788181: Usunięto wiersz: Imię = Dziecko105, ID karty = brak
+2025-04-27T19:57:13.788327: Usunięto wiersz: Imię = Dziecko104, ID karty = brak
+2025-04-27T19:57:13.788478: Usunięto wiersz: Imię = Dziecko103, ID karty = brak
+2025-04-27T19:57:13.788613: Usunięto wiersz: Imię = Dziecko102, ID karty = brak
+2025-04-27T19:57:13.788752: Usunięto wiersz: Imię = Dziecko101, ID karty = brak
+2025-04-27T19:57:13.788889: Usunięto wiersz: Imię = Dziecko100, ID karty = brak
+2025-04-27T19:57:13.789022: Usunięto wiersz: Imię = Dziecko99, ID karty = brak
+2025-04-27T19:57:13.789161: Usunięto wiersz: Imię = Dziecko98, ID karty = brak
+2025-04-27T19:57:13.789306: Usunięto wiersz: Imię = Dziecko97, ID karty = brak
+2025-04-27T19:57:13.789454: Usunięto wiersz: Imię = Dziecko96, ID karty = brak
+2025-04-27T19:57:13.789590: Usunięto wiersz: Imię = Dziecko95, ID karty = brak
+2025-04-27T19:57:13.789740: Usunięto wiersz: Imię = Dziecko94, ID karty = brak
+2025-04-27T19:57:13.789881: Usunięto wiersz: Imię = Dziecko93, ID karty = brak
+2025-04-27T19:57:13.790018: Usunięto wiersz: Imię = Dziecko92, ID karty = brak
+2025-04-27T19:57:13.790155: Usunięto wiersz: Imię = Dziecko91, ID karty = brak
+2025-04-27T19:57:13.790303: Usunięto wiersz: Imię = Dziecko90, ID karty = brak
+2025-04-27T19:57:13.790457: Usunięto wiersz: Imię = Dziecko89, ID karty = brak
+2025-04-27T19:57:13.790609: Usunięto wiersz: Imię = Dziecko88, ID karty = brak
+2025-04-27T19:57:13.790749: Usunięto wiersz: Imię = Dziecko87, ID karty = brak
+2025-04-27T19:57:13.790953: Usunięto wiersz: Imię = Dziecko86, ID karty = brak
+2025-04-27T19:57:13.791102: Usunięto wiersz: Imię = Dziecko85, ID karty = brak
+2025-04-27T19:57:13.791239: Usunięto wiersz: Imię = Dziecko84, ID karty = brak
+2025-04-27T19:57:13.791373: Usunięto wiersz: Imię = Dziecko83, ID karty = brak
+2025-04-27T19:57:13.791507: Usunięto wiersz: Imię = Dziecko82, ID karty = brak
+2025-04-27T19:57:13.791640: Usunięto wiersz: Imię = Dziecko81, ID karty = brak
+2025-04-27T19:57:13.791790: Usunięto wiersz: Imię = Dziecko80, ID karty = brak
+2025-04-27T19:57:13.791936: Usunięto wiersz: Imię = Dziecko79, ID karty = brak
+2025-04-27T19:57:13.792065: Usunięto wiersz: Imię = Dziecko78, ID karty = brak
+2025-04-27T19:57:13.792198: Usunięto wiersz: Imię = Dziecko77, ID karty = brak
+2025-04-27T19:57:13.792319: Usunięto wiersz: Imię = Dziecko76, ID karty = brak
+2025-04-27T19:57:13.792455: Usunięto wiersz: Imię = Dziecko75, ID karty = brak
+2025-04-27T19:57:13.792599: Usunięto wiersz: Imię = Dziecko74, ID karty = brak
+2025-04-27T19:57:13.792721: Usunięto wiersz: Imię = Dziecko73, ID karty = brak
+2025-04-27T19:57:13.792856: Usunięto wiersz: Imię = Dziecko72, ID karty = brak
+2025-04-27T19:57:13.793016: Usunięto wiersz: Imię = Dziecko71, ID karty = brak
+2025-04-27T19:57:13.793163: Usunięto wiersz: Imię = Dziecko70, ID karty = brak
+2025-04-27T19:57:13.793299: Usunięto wiersz: Imię = Dziecko69, ID karty = brak
+2025-04-27T19:57:13.793427: Usunięto wiersz: Imię = Dziecko68, ID karty = brak
+2025-04-27T19:57:13.793596: Usunięto wiersz: Imię = Dziecko67, ID karty = brak
+2025-04-27T19:57:13.793736: Usunięto wiersz: Imię = Dziecko66, ID karty = brak
+2025-04-27T19:57:13.793866: Usunięto wiersz: Imię = Dziecko65, ID karty = brak
+2025-04-27T19:57:13.793989: Usunięto wiersz: Imię = Dziecko64, ID karty = brak
+2025-04-27T19:57:13.794165: Usunięto wiersz: Imię = Dziecko63, ID karty = brak
+2025-04-27T19:57:13.794300: Usunięto wiersz: Imię = Dziecko62, ID karty = brak
+2025-04-27T19:57:13.794426: Usunięto wiersz: Imię = Dziecko61, ID karty = brak
+2025-04-27T19:57:13.794591: Usunięto wiersz: Imię = Dziecko60, ID karty = brak
+2025-04-27T19:57:13.794748: Usunięto wiersz: Imię = Dziecko59, ID karty = brak
+2025-04-27T19:57:13.794872: Usunięto wiersz: Imię = Dziecko58, ID karty = brak
+2025-04-27T19:57:13.795004: Usunięto wiersz: Imię = Dziecko57, ID karty = brak
+2025-04-27T19:57:13.795131: Usunięto wiersz: Imię = Dziecko56, ID karty = brak
+2025-04-27T19:57:13.795263: Usunięto wiersz: Imię = Dziecko55, ID karty = brak
+2025-04-27T19:57:13.795383: Usunięto wiersz: Imię = Dziecko54, ID karty = brak
+2025-04-27T19:57:13.795517: Usunięto wiersz: Imię = Dziecko53, ID karty = brak
+2025-04-27T19:57:13.795649: Usunięto wiersz: Imię = Dziecko52, ID karty = brak
+2025-04-27T19:57:13.795775: Usunięto wiersz: Imię = Dziecko51, ID karty = brak
+2025-04-27T19:57:13.795894: Usunięto wiersz: Imię = Dziecko50, ID karty = brak
+2025-04-27T19:57:13.796013: Usunięto wiersz: Imię = Dziecko49, ID karty = brak
+2025-04-27T19:57:13.796133: Usunięto wiersz: Imię = Dziecko48, ID karty = brak
+2025-04-27T19:57:13.796251: Usunięto wiersz: Imię = Dziecko47, ID karty = brak
+2025-04-27T19:57:13.796370: Usunięto wiersz: Imię = Dziecko46, ID karty = brak
+2025-04-27T19:57:13.796485: Usunięto wiersz: Imię = Dziecko45, ID karty = brak
+2025-04-27T19:57:13.796620: Usunięto wiersz: Imię = Dziecko44, ID karty = brak
+2025-04-27T19:57:13.796755: Usunięto wiersz: Imię = Dziecko43, ID karty = brak
+2025-04-27T19:57:13.796923: Usunięto wiersz: Imię = Dziecko42, ID karty = brak
+2025-04-27T19:57:13.797045: Usunięto wiersz: Imię = Dziecko41, ID karty = brak
+2025-04-27T19:57:13.797221: Usunięto wiersz: Imię = Dziecko40, ID karty = brak
+2025-04-27T19:57:13.797477: Usunięto wiersz: Imię = Dziecko39, ID karty = brak
+2025-04-27T19:57:13.797595: Usunięto wiersz: Imię = Dziecko38, ID karty = brak
+2025-04-27T19:57:13.797739: Usunięto wiersz: Imię = Dziecko37, ID karty = brak
+2025-04-27T19:57:13.797885: Usunięto wiersz: Imię = Dziecko36, ID karty = brak
+2025-04-27T19:57:13.798101: Usunięto wiersz: Imię = Dziecko35, ID karty = brak
+2025-04-27T19:57:13.798271: Usunięto wiersz: Imię = Dziecko34, ID karty = brak
+2025-04-27T19:57:13.798401: Usunięto wiersz: Imię = Dziecko33, ID karty = brak
+2025-04-27T19:57:13.798547: Usunięto wiersz: Imię = Dziecko32, ID karty = brak
+2025-04-27T19:57:13.798709: Usunięto wiersz: Imię = Dziecko31, ID karty = brak
+2025-04-27T19:57:13.798834: Usunięto wiersz: Imię = Dziecko30, ID karty = brak
+2025-04-27T19:57:13.798944: Usunięto wiersz: Imię = Dziecko29, ID karty = brak
+2025-04-27T19:57:13.799084: Usunięto wiersz: Imię = Dziecko28, ID karty = brak
+2025-04-27T19:57:13.799284: Usunięto wiersz: Imię = Dziecko27, ID karty = brak
+2025-04-27T19:57:13.799432: Usunięto wiersz: Imię = Dziecko26, ID karty = brak
+2025-04-27T19:57:13.799608: Usunięto wiersz: Imię = Dziecko25, ID karty = brak
+2025-04-27T19:57:13.799754: Usunięto wiersz: Imię = Dziecko24, ID karty = brak
+2025-04-27T19:57:13.799903: Usunięto wiersz: Imię = Dziecko23, ID karty = brak
+2025-04-27T19:57:13.800047: Usunięto wiersz: Imię = Dziecko22, ID karty = brak
+2025-04-27T19:57:13.800227: Usunięto wiersz: Imię = Dziecko21, ID karty = brak
+2025-04-27T19:57:13.800359: Usunięto wiersz: Imię = Dziecko20, ID karty = brak
+2025-04-27T19:57:13.800532: Usunięto wiersz: Imię = Dziecko19, ID karty = brak
+2025-04-27T19:57:13.800681: Usunięto wiersz: Imię = Dziecko18, ID karty = brak
+2025-04-27T19:57:13.800837: Usunięto wiersz: Imię = Dziecko17, ID karty = brak
+2025-04-27T19:57:13.801019: Usunięto wiersz: Imię = Dziecko16, ID karty = brak
+2025-04-27T19:57:13.801188: Usunięto wiersz: Imię = Dziecko15, ID karty = brak
+2025-04-27T19:57:13.801319: Usunięto wiersz: Imię = Dziecko14, ID karty = brak
+2025-04-27T19:57:13.801567: Usunięto wiersz: Imię = Dziecko13, ID karty = brak
+2025-04-27T19:57:13.801766: Usunięto wiersz: Imię = Dziecko12, ID karty = brak
+2025-04-27T19:57:13.801918: Usunięto wiersz: Imię = Dziecko11, ID karty = brak
+2025-04-27T19:57:13.802133: Usunięto wiersz: Imię = Dziecko10, ID karty = brak
+2025-04-27T19:57:13.802328: Usunięto wiersz: Imię = Dziecko9, ID karty = brak
+2025-04-27T19:57:13.802547: Usunięto wiersz: Imię = Dziecko8, ID karty = brak
+2025-04-27T19:57:13.802703: Usunięto wiersz: Imię = Dziecko7, ID karty = brak
+2025-04-27T19:57:13.802873: Usunięto wiersz: Imię = Dziecko6, ID karty = brak
+2025-04-27T19:57:13.803032: Usunięto wiersz: Imię = Dziecko5, ID karty = brak
+2025-04-27T19:57:13.803209: Usunięto wiersz: Imię = Dziecko4, ID karty = brak
+2025-04-27T19:57:13.803390: Usunięto wiersz: Imię = Dziecko3, ID karty = brak
+2025-04-27T19:57:13.803539: Usunięto wiersz: Imię = Dziecko2, ID karty = brak
+2025-04-27T19:57:13.803724: Usunięto wiersz: Imię = Dziecko1, ID karty = brak
+2025-04-27T19:57:13.803875: Usunięto wiersz: Imię = Dziecko10, ID karty = brak
+2025-04-27T19:57:13.804053: Usunięto wiersz: Imię = Dziecko9, ID karty = brak
+2025-04-27T19:57:13.804262: Usunięto wiersz: Imię = Dziecko8, ID karty = brak
+2025-04-27T19:57:13.804542: Usunięto wiersz: Imię = Dziecko7, ID karty = brak
+2025-04-27T19:57:13.804716: Usunięto wiersz: Imię = Dziecko6, ID karty = brak
+2025-04-27T19:57:13.804839: Usunięto wiersz: Imię = Dziecko5, ID karty = brak
+2025-04-27T19:57:13.804977: Usunięto wiersz: Imię = Dziecko4, ID karty = brak
+2025-04-27T19:57:13.805136: Usunięto wiersz: Imię = Dziecko3, ID karty = brak
+2025-04-27T19:57:13.805281: Usunięto wiersz: Imię = Dziecko2, ID karty = brak
+2025-04-27T19:57:13.805466: Usunięto wiersz: Imię = Dziecko1, ID karty = brak
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T19:57:19.747922
+2025-04-27T19:57:19.749292: Dodano ucznia: Adam Golik (ID: 1234)
+2025-04-27T19:57:35.577678: Usunięto wiersz: Imię = Adam, ID karty = 1234
+2025-04-27T19:57:45.764337: Błąd: Nieodpowiedni format danych! Dane: 20E
+2025-04-27T19:58:10.315654: Dodano nauczycieli: liczba = 5
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T20:00:02.509014
+2025-04-27T20:00:02.522486: Dodano ucznia: Adam Golik (klasa: 8B, nr: 2)
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T20:00:06.064930
+2025-04-27T20:00:06.067087: Dodano ucznia: Adam Golik (klasa: 8B, nr: 2)
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T20:00:09.358912
+2025-04-27T20:00:09.360025: Dodano ucznia: Adam Golik (klasa: 8B, nr: 2)
+Dodano studenta: Adam, ID karty: 13245, Data: 2025-04-27T20:00:14.005593
+2025-04-27T20:00:14.006817: Dodano ucznia: Adam Byrtus (ID: 13245)
+Dodano studenta: Adam, ID karty: 13245, Data: 2025-04-27T20:00:55.913718
+2025-04-27T20:00:55.914960: Dodano ucznia: Adam Byrtus (klasa: 8B, nr: 1)
+2025-04-27T20:00:58.256819: Dodano dzieci: liczba = 3
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T20:02:43.429441
+2025-04-27T20:02:43.443118: Dodano ucznia: Adam Golik (klasa: 8B, nr: 2)
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-04-27T20:02:59.445009
+2025-04-27T20:02:59.446845: Dodano ucznia: Adam Golik (klasa: 8B, nr: 2)
+Dodano studenta: Adam, ID karty: 13245, Data: 2025-04-27T20:03:04.686654
+2025-04-27T20:03:04.688653: Dodano ucznia: Adam Byrtus (klasa: 8B, nr: 1)
+===== dzień: 7 ==== miesiąc: 5 =====
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-05-07T19:25:18.003338
+2025-05-07T19:25:18.944853: Dodano ucznia: Adam Golik (ID: 1234)
+Dodano studenta: Adam, ID karty: 1234, Data: 2025-05-07T19:25:23.374902
+2025-05-07T19:25:23.376881: Dodano ucznia: Adam Golik (ID: 1234)

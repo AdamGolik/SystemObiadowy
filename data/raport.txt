@@ -1,0 +1,15 @@
+===== dzień: 27 ==== miesiąc: 4 =====
+2025-04-27T19:57:24.235819 - Uczeń o identyfikatorze 3245678 zapomniał karty
+2025-04-27T20:00:02.522757 - Uczeń klasy 8B2 zapomniał kartę (Adam Golik)
+2025-04-27T20:00:06.067274 - Uczeń klasy 8B2 zapomniał kartę (Adam Golik)
+2025-04-27T20:00:09.360123 - Uczeń klasy 8B2 zapomniał kartę (Adam Golik)
+2025-04-27T20:00:50.580583 - Uczeń o identyfikatorze 1324 zapomniał karty
+2025-04-27T20:00:55.915059 - Uczeń klasy 8B1 zapomniał kartę (Adam Byrtus)
+2025-04-27T20:01:00.948823 - Uczeń o identyfikatorze 2345678 zapomniał karty
+2025-04-27T20:02:43.443426 - Uczeń klasy 8B2 zapomniał kartę (Adam Golik)
+2025-04-27T20:02:59.447036 - Uczeń klasy 8B2 zapomniał kartę (Adam Golik)
+2025-04-27T20:03:04.688834 - Uczeń klasy 8B1 zapomniał kartę (Adam Byrtus)
+===== dzień: 7 ==== miesiąc: 5 =====
+2025-05-07T19:24:04.776336 - Uczeń o identyfikatorze 1332 zapomniał karty
+2025-05-07T19:24:07.538366 - Uczeń o identyfikatorze 1345 zapomniał karty
+2025-05-07T19:25:27.029112 - Uczeń o identyfikatorze 1333 zapomniał karty

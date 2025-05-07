@@ -165,22 +165,27 @@ public class MainApp {
         });
   }
 
-  private void handleInputChange() {
+private void handleInputChange() {
     String input = inputField.getText().trim();
+
+    // Usuń zera z początku (np. 000009912 -> 9912)
+    input = input.replaceFirst("^0+(?!$)", "");
+
     if (input.length() > 3 && input.matches("\\d+")) {
-      if (autoInputTimer != null && autoInputTimer.isRunning()) {
-        autoInputTimer.stop();
-      }
-      autoInputTimer = new Timer(100, e -> {
-        if (input.equals(inputField.getText().trim())) {
-          addStudentById(input);
-          inputField.setText("");
+        if (autoInputTimer != null && autoInputTimer.isRunning()) {
+            autoInputTimer.stop();
         }
-      });
-      autoInputTimer.setRepeats(false);
-      autoInputTimer.start();
+        String finalInput = input;
+        autoInputTimer = new Timer(100, e -> {
+            if (finalInput.equals(inputField.getText().trim().replaceFirst("^0+(?!$)", ""))) {
+                addStudentById(finalInput);
+                inputField.setText("");
+            }
+        });
+        autoInputTimer.setRepeats(false);
+        autoInputTimer.start();
     }
-  }
+}
 
   /**
    * Logowanie do pliku LOG_FILE_PATH.

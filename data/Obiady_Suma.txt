@@ -1,0 +1,6 @@
+===== Podsumowanie Obiadów =====
+Całkowita liczba obiadów: 2
+Liczba obiadów dla dzieci: 0
+Liczba obiadów dla nauczycieli: 0
+Liczba obiadów dla uczniów: 1
+Liczba wpisów w historii logów: 2
